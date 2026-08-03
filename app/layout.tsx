@@ -1,6 +1,8 @@
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import VisitTracker from '@/components/VisitTracker'
+import ScrollProgress from '@/components/ScrollProgress'
+import CursorTrail from '@/components/CursorTrail'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -26,6 +28,8 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <VisitTracker />
         </Suspense>
+        <ScrollProgress />
+        <CursorTrail />
         {children}
       </body>
     </html>

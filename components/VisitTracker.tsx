@@ -23,16 +23,12 @@ export default function VisitTracker(): null {
       referrer: document.referrer || null,
     }
 
-   supabase
-  .from('visits')
-  .insert(payload)
-  .then(({ error }) => {
-    if (error) {
-      console.error('방문 기록 실패:', error.message)
-    } else {
-      sessionStorage.setItem(sessionKey, '1')
-    }
-  })
+    supabase
+      .from('visits')
+      .insert(payload)
+      .then(({ error }) => {
+        if (error) console.error('방문 기록 실패:', error.message)
+      })
   }, [searchParams])
 
   return null
