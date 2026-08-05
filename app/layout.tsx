@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import VisitTracker from '@/components/VisitTracker'
 import ScrollProgress from '@/components/ScrollProgress'
-import CursorTrail from '@/components/CursorTrail'
+import ScrollBuddy from '@/components/ScrollBuddy'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function RootLayout({
           <VisitTracker />
         </Suspense>
         <ScrollProgress />
-        <CursorTrail />
+        <ScrollBuddy />
         {children}
       </body>
     </html>

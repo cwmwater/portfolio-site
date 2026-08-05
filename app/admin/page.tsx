@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabaseClient'
+import FeatureText from '@/components/FeatureText'
 import { TECH_TAG_CLASS } from '@/lib/uiClasses'
 import type {
   Visit,
@@ -23,6 +24,56 @@ async function uploadPortfolioImage(file: File, folder: string): Promise<string>
   return data.publicUrl
 }
 
+function Pager({
+  page,
+  setPage,
+  total,
+  pageSize,
+}: {
+  page: number
+  setPage: (updater: (p: number) => number) => void
+  total: number
+  pageSize: number
+}) {
+  const pageCount = Math.max(Math.ceil(total / pageSize), 1)
+  if (pageCount <= 1) return null
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-1.5">
+      <button
+        type="button"
+        onClick={() => setPage((p) => Math.max(p - 1, 0))}
+        disabled={page === 0}
+        className="!px-3 !py-1.5 !text-xs"
+      >
+        이전
+      </button>
+      {Array.from({ length: pageCount }, (_, i) => i).map((i) => (
+        <button
+          key={i}
+          type="button"
+          onClick={() => setPage(() => i)}
+          aria-current={i === page ? 'page' : undefined}
+          className={
+            i === page
+              ? '!px-3 !py-1.5 !text-xs'
+              : '!border !border-border !bg-white !px-3 !py-1.5 !text-xs !text-dark hover:!bg-neutral-100'
+          }
+        >
+          {i + 1}
+        </button>
+      ))}
+      <button
+        type="button"
+        onClick={() => setPage((p) => Math.min(p + 1, pageCount - 1))}
+        disabled={page >= pageCount - 1}
+        className="!px-3 !py-1.5 !text-xs"
+      >
+        다음
+      </button>
+    </div>
+  )
+}
+
 export default function AdminPage() {
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
@@ -36,17 +87,22 @@ export default function AdminPage() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [introInput, setIntroInput] = useState('')
   const [phoneInput, setPhoneInput] = useState('')
+  const [birthdateInput, setBirthdateInput] = useState('')
+  const [locationInput, setLocationInput] = useState('')
   const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([])
   const [skillTagInput, setSkillTagInput] = useState<Record<string, string>>({})
   const [resumeItems, setResumeItems] = useState<ResumeItem[]>([])
   const [savingProfile, setSavingProfile] = useState(false)
   const [uploadingPhoto, setUploadingPhoto] = useState(false)
+  const [uploadingHeroImage, setUploadingHeroImage] = useState(false)
 
   // 프로젝트 상세(개요/구현기능/트러블슈팅) 편집 상태
   const [overviewDraft, setOverviewDraft] = useState<
     Record<string, { team_size: string; main_duty: string; role: string }>
   >({})
   const [featureInput, setFeatureInput] = useState<Record<string, string>>({})
+  const [editingFeature, setEditingFeature] = useState<{ id: string; index: number } | null>(null)
+  const [editingFeatureText, setEditingFeatureText] = useState('')
   const [tsDraft, setTsDraft] = useState<Record<string, { title: string; problem: string; solution: string }>>(
     {}
   )
@@ -60,6 +116,7 @@ export default function AdminPage() {
   const [role, setRole] = useState('')
   const [description, setDescription] = useState('')
   const [techStackInput, setTechStackInput] = useState('')
+  const [isFeaturedInput, setIsFeaturedInput] = useState(true)
   const [newYoutubeUrl, setNewYoutubeUrl] = useState('')
   const [newProjectFiles, setNewProjectFiles] = useState<File[]>([])
   const [newProjectLinks, setNewProjectLinks] = useState<ProjectLink[]>([])
@@ -68,6 +125,12 @@ export default function AdminPage() {
   const [saving, setSaving] = useState(false)
   const [uploadingProjectImageId, setUploadingProjectImageId] = useState<string | null>(null)
   const [linkDraft, setLinkDraft] = useState<Record<string, { label: string; url: string }>>({})
+
+  // 대시보드 탭
+  const [activeTab, setActiveTab] = useState<'overview' | 'profile' | 'projects' | 'stats'>('overview')
+  const [refPage, setRefPage] = useState(0)
+  const [visitPage, setVisitPage] = useState(0)
+  const PAGE_SIZE = 20
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -127,6 +190,8 @@ export default function AdminPage() {
         setProfile(p)
         setIntroInput(p?.intro ?? '')
         setPhoneInput(p?.phone ?? '')
+        setBirthdateInput(p?.birthdate ?? '')
+        setLocationInput(p?.location ?? '')
         setSkillCategories(p?.skill_categories ?? [])
         setResumeItems(p?.resume_items ?? [])
       })
@@ -152,6 +217,23 @@ export default function AdminPage() {
       alert('사진 업로드 실패: ' + (err as Error).message)
     } finally {
       setUploadingPhoto(false)
+      e.target.value = ''
+    }
+  }
+
+  async function handleHeroImageFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploadingHeroImage(true)
+    try {
+      const url = await uploadPortfolioImage(file, 'hero')
+      const { error } = await supabase.from('profile').update({ hero_image_url: url }).eq('id', 1)
+      if (error) throw error
+      loadProfile()
+    } catch (err) {
+      alert('배경 이미지 업로드 실패: ' + (err as Error).message)
+    } finally {
+      setUploadingHeroImage(false)
       e.target.value = ''
     }
   }
@@ -204,6 +286,8 @@ export default function AdminPage() {
       .update({
         intro: introInput.trim(),
         phone: phoneInput.trim() || null,
+        birthdate: birthdateInput.trim() || null,
+        location: locationInput.trim() || null,
         skill_categories: skillCategories,
         resume_items: resumeItems,
       })
@@ -324,6 +408,33 @@ export default function AdminPage() {
     loadProjects()
   }
 
+  function startEditFeature(id: string, index: number, current: string) {
+    setEditingFeature({ id, index })
+    setEditingFeatureText(current)
+  }
+
+  function cancelEditFeature() {
+    setEditingFeature(null)
+    setEditingFeatureText('')
+  }
+
+  async function handleSaveFeatureEdit() {
+    if (!editingFeature) return
+    const { id, index } = editingFeature
+    const text = editingFeatureText.trim()
+    if (!text) return
+    const target = projects.find((p) => p.id === id)
+    if (!target) return
+    const nextFeatures = target.features.map((f, i) => (i === index ? text : f))
+    const { error } = await supabase.from('projects').update({ features: nextFeatures }).eq('id', id)
+    if (error) {
+      alert('수정 실패: ' + error.message)
+      return
+    }
+    cancelEditFeature()
+    loadProjects()
+  }
+
   async function handleAddTroubleshooting(id: string) {
     const draft = tsDraft[id]
     if (!draft?.title.trim() || !draft?.problem.trim() || !draft?.solution.trim()) return
@@ -433,6 +544,7 @@ export default function AdminPage() {
       tech_stack: techStack,
       media,
       links: newProjectLinks,
+      is_featured: isFeaturedInput,
       sort_order: projects.length + 1,
     })
 
@@ -452,6 +564,16 @@ export default function AdminPage() {
     setNewProjectFiles([])
     setNewYoutubeUrl('')
     setNewProjectLinks([])
+    setIsFeaturedInput(true)
+    loadProjects()
+  }
+
+  async function handleToggleFeatured(id: string, next: boolean) {
+    const { error } = await supabase.from('projects').update({ is_featured: next }).eq('id', id)
+    if (error) {
+      alert('저장 실패: ' + error.message)
+      return
+    }
     loadProjects()
   }
 
@@ -498,8 +620,73 @@ export default function AdminPage() {
     return acc
   }, {})
 
+  const TABS = [
+    { id: 'overview' as const, label: '개요' },
+    { id: 'profile' as const, label: '프로필' },
+    { id: 'projects' as const, label: '프로젝트' },
+    { id: 'stats' as const, label: '방문 통계' },
+  ]
+
   return (
-    <main className="admin-shell">
+    <div className="mx-auto flex min-h-screen max-w-[1100px] flex-col gap-8 px-6 py-10 font-sans md:flex-row">
+      <aside className="flex-shrink-0 md:w-48">
+        <div className="mb-4 font-mono text-sm font-bold md:mb-6">관리자 대시보드</div>
+        <nav className="flex gap-1.5 overflow-x-auto md:flex-col md:overflow-visible">
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex-shrink-0 whitespace-nowrap rounded-lg px-3.5 py-2.5 text-left text-sm font-semibold transition-colors ${
+                activeTab === tab.id ? 'bg-dark text-white' : 'bg-transparent text-muted hover:bg-neutral-100'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </nav>
+      </aside>
+
+      <div className="admin-shell mx-0 max-w-none px-0 py-0">
+      {activeTab === 'overview' && (
+        <section>
+          <h2>개요</h2>
+          <div className="grid grid-cols-3 gap-4 max-md:grid-cols-1">
+            <div className="rounded-xl border border-border p-5">
+              <p className="text-xs text-muted">등록된 프로젝트</p>
+              <p className="mt-1 text-2xl font-bold">{projects.length}</p>
+            </div>
+            <div className="rounded-xl border border-border p-5">
+              <p className="text-xs text-muted">누적 방문 기록</p>
+              <p className="mt-1 text-2xl font-bold">{visits.length}</p>
+            </div>
+            <div className="rounded-xl border border-border p-5">
+              <p className="text-xs text-muted">기술 스택 카테고리</p>
+              <p className="mt-1 text-2xl font-bold">{skillCategories.length}</p>
+            </div>
+          </div>
+
+          <h3 className="mt-8">경로(ref)별 방문 수 (상위 5개)</h3>
+          <ul className="mt-2 flex flex-col gap-1.5">
+            {Object.entries(refCounts)
+              .sort((a, b) => b[1] - a[1])
+              .slice(0, 5)
+              .map(([ref, count]) => (
+                <li
+                  key={ref}
+                  className="flex items-center justify-between rounded-lg border border-border px-3.5 py-2 text-sm"
+                >
+                  <span>{ref}</span>
+                  <span className="font-mono text-muted">{count}회</span>
+                </li>
+              ))}
+            {visits.length === 0 && <p className="font-mono text-sm text-muted">아직 방문 기록이 없습니다.</p>}
+          </ul>
+        </section>
+      )}
+
+      {activeTab === 'profile' && (
+      <>
       <h2>프로필</h2>
 
       <section className="mb-10">
@@ -511,6 +698,23 @@ export default function AdminPage() {
           <div>
             <input type="file" accept="image/*" onChange={handlePhotoFileChange} disabled={uploadingPhoto} />
             {uploadingPhoto && <p className="mt-1 text-[0.85rem]">업로드 중...</p>}
+          </div>
+        </div>
+
+        <div className="admin-photo-row">
+          {profile?.hero_image_url && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={profile.hero_image_url} alt="히어로 배경 이미지 미리보기" className="admin-project-thumb" />
+          )}
+          <div>
+            <p className="mb-1 text-[0.85rem] text-muted">히어로 배경 이미지</p>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleHeroImageFileChange}
+              disabled={uploadingHeroImage}
+            />
+            {uploadingHeroImage && <p className="mt-1 text-[0.85rem]">업로드 중...</p>}
           </div>
         </div>
 
@@ -526,6 +730,18 @@ export default function AdminPage() {
             placeholder="전화번호 (예: 010-1234-5678)"
             value={phoneInput}
             onChange={(e) => setPhoneInput(e.target.value)}
+          />
+
+          <input
+            placeholder="생년월일 (예: 01.03.22)"
+            value={birthdateInput}
+            onChange={(e) => setBirthdateInput(e.target.value)}
+          />
+
+          <input
+            placeholder="거주지역 (예: 경기도 고양시 덕양구)"
+            value={locationInput}
+            onChange={(e) => setLocationInput(e.target.value)}
           />
 
           <h3 className="mt-2">기술 스택 (카테고리별)</h3>
@@ -623,6 +839,8 @@ export default function AdminPage() {
               >
                 <option value="학력">학력</option>
                 <option value="자격증">자격증</option>
+                <option value="교육">교육</option>
+                <option value="수료">수료</option>
                 <option value="경력">경력</option>
                 <option value="수상">수상</option>
               </select>
@@ -650,7 +868,11 @@ export default function AdminPage() {
           </button>
         </form>
       </section>
+      </>
+      )}
 
+      {activeTab === 'projects' && (
+      <>
       <h2>프로젝트 관리</h2>
 
       <section className="mb-8">
@@ -707,6 +929,15 @@ export default function AdminPage() {
             onChange={(e) => setNewYoutubeUrl(e.target.value)}
           />
 
+          <label className="flex items-center gap-2 text-[0.9rem]">
+            <input
+              type="checkbox"
+              checked={isFeaturedInput}
+              onChange={(e) => setIsFeaturedInput(e.target.checked)}
+            />
+            주요 프로젝트 (Projects 목록 기본 노출)
+          </label>
+
           <div className="admin-link-row">
             <input
               placeholder="링크 라벨 (예: GitHub)"
@@ -753,6 +984,14 @@ export default function AdminPage() {
             <div>
               <strong>{p.title}</strong>
               {p.period && <span className="ml-2 text-muted">{p.period}</span>}
+              <label className="ml-2 inline-flex items-center gap-1.5 text-[0.8rem] text-muted">
+                <input
+                  type="checkbox"
+                  checked={p.is_featured}
+                  onChange={(e) => handleToggleFeatured(p.id, e.target.checked)}
+                />
+                주요 프로젝트
+              </label>
               <p className="mt-1 text-[0.9rem]">{p.description}</p>
 
               <div className="admin-resume-item grid-cols-[1fr_1fr_1fr_auto]">
@@ -803,17 +1042,60 @@ export default function AdminPage() {
                 </button>
               </div>
 
-              <p className="admin-skill-group-label">구현 기능</p>
+              <p className="admin-skill-group-label">구현 기능 (실제 사이트에 보일 모습 그대로 미리보기)</p>
               {p.features.length > 0 && (
-                <div className="admin-link-list">
-                  {p.features.map((f, idx) => (
-                    <div className="admin-link-item" key={idx}>
-                      <span>{f}</span>
-                      <button type="button" onClick={() => handleRemoveFeature(p.id, idx)}>
-                        삭제
-                      </button>
-                    </div>
-                  ))}
+                <div className="flex flex-col gap-1.5">
+                  {p.features.map((f, idx) => {
+                    const isEditing = editingFeature?.id === p.id && editingFeature.index === idx
+                    if (isEditing) {
+                      return (
+                        <div className="rounded-lg border border-accent px-3 py-2.5" key={idx}>
+                          <textarea
+                            value={editingFeatureText}
+                            onChange={(e) => setEditingFeatureText(e.target.value)}
+                            rows={4}
+                            className="mb-2 w-full"
+                          />
+                          <div className="flex gap-2">
+                            <button type="button" onClick={handleSaveFeatureEdit}>
+                              저장
+                            </button>
+                            <button
+                              type="button"
+                              onClick={cancelEditFeature}
+                              className="!bg-transparent !text-muted"
+                            >
+                              취소
+                            </button>
+                          </div>
+                        </div>
+                      )
+                    }
+                    return (
+                      <div
+                        className="flex items-start justify-between gap-3 rounded-lg border border-border px-3 py-2.5 text-[0.85rem]"
+                        key={idx}
+                      >
+                        <FeatureText text={f} className="flex-1" />
+                        <div className="flex flex-shrink-0 gap-2">
+                          <button
+                            type="button"
+                            onClick={() => startEditFeature(p.id, idx, f)}
+                            className="bg-transparent px-1.5 py-0.5 text-xs text-muted hover:opacity-70"
+                          >
+                            수정
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveFeature(p.id, idx)}
+                            className="bg-transparent px-1.5 py-0.5 text-xs text-red-500 hover:opacity-70"
+                          >
+                            삭제
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               )}
               <div className="admin-link-row">
@@ -1005,18 +1287,25 @@ export default function AdminPage() {
           </div>
         ))}
       </section>
+      </>
+      )}
 
+      {activeTab === 'stats' && (
+      <>
       <h2>방문 통계</h2>
 
       <section>
         <h3>경로(ref)별 방문 수</h3>
         <ul>
-          {Object.entries(refCounts).map(([ref, count]) => (
-            <li key={ref}>
-              {ref} — {count}회
-            </li>
-          ))}
+          {Object.entries(refCounts)
+            .slice(refPage * PAGE_SIZE, refPage * PAGE_SIZE + PAGE_SIZE)
+            .map(([ref, count]) => (
+              <li key={ref}>
+                {ref} — {count}회
+              </li>
+            ))}
         </ul>
+        <Pager page={refPage} setPage={setRefPage} total={Object.keys(refCounts).length} pageSize={PAGE_SIZE} />
       </section>
 
       <section>
@@ -1030,7 +1319,7 @@ export default function AdminPage() {
             </tr>
           </thead>
           <tbody>
-            {visits.map((v) => (
+            {visits.slice(visitPage * PAGE_SIZE, visitPage * PAGE_SIZE + PAGE_SIZE).map((v) => (
               <tr key={v.id}>
                 <td>{new Date(v.created_at).toLocaleString('ko-KR')}</td>
                 <td>{v.ref || '-'}</td>
@@ -1039,7 +1328,11 @@ export default function AdminPage() {
             ))}
           </tbody>
         </table>
+        <Pager page={visitPage} setPage={setVisitPage} total={visits.length} pageSize={PAGE_SIZE} />
       </section>
-    </main>
+      </>
+      )}
+      </div>
+    </div>
   )
 }

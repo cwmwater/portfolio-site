@@ -25,18 +25,18 @@ export default function ProjectDetailPanel({
   }, [project, onClose])
 
   return (
-    <>
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 transition-opacity duration-300 ${
+        project ? 'opacity-100' : 'pointer-events-none opacity-0'
+      }`}
+      onClick={onClose}
+      aria-hidden={!project}
+    >
       <div
-        className={`fixed inset-0 z-50 bg-black/50 transition-opacity duration-300 ${
-          project ? 'opacity-100' : 'pointer-events-none opacity-0'
+        className={`max-h-[85vh] w-full max-w-[640px] overflow-y-auto rounded-2xl bg-light shadow-card-lg transition-transform duration-300 ${
+          project ? 'scale-100' : 'scale-95'
         }`}
-        onClick={onClose}
-      />
-      <aside
-        className={`fixed bottom-0 right-0 top-0 z-[55] w-full max-w-[560px] overflow-y-auto bg-light shadow-card-lg transition-transform duration-300 ${
-          project ? 'translate-x-0' : 'translate-x-full'
-        }`}
-        aria-hidden={!project}
+        onClick={(e) => e.stopPropagation()}
       >
         <button
           className="sticky top-0 z-10 ml-auto block bg-light px-5 py-3.5 text-2xl leading-none text-muted hover:text-dark"
@@ -50,7 +50,7 @@ export default function ProjectDetailPanel({
             <ProjectDetailContent project={project} />
           </div>
         )}
-      </aside>
-    </>
+      </div>
+    </div>
   )
 }

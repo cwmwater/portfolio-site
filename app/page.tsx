@@ -1,18 +1,22 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import CodeWindow from '@/components/CodeWindow'
-import ProjectShowcase from '@/components/ProjectShowcase'
+import ProjectList from '@/components/ProjectList'
+import SkillsList from '@/components/SkillsList'
+import GithubIcon from '@/components/icons/GithubIcon'
+import { UserIcon, CalendarIcon, MapPinIcon, PhoneIcon, MailIcon, CapIcon } from '@/components/icons/InfoIcons'
 import { supabase } from '@/lib/supabaseClient'
-import { categoryColor, resumeCategoryColor } from '@/lib/palette'
+import { resumeCategoryColor } from '@/lib/palette'
 import type { Project, Profile } from '@/lib/types'
 
 export const revalidate = 0 // 관리자 페이지에서 수정한 내용이 바로 반영되도록
 
+const GITHUB_URL = 'https://github.com/cwmwater'
+
 function SectionHead({ num, title }: { num: string; title: string }) {
   return (
     <div className="mb-8 flex items-baseline gap-3">
-      <span className="font-mono text-[0.9rem] text-accent-dim">{num}</span>
-      <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
+      <span className="font-mono text-[0.9rem] text-accent">{num}</span>
+      <h2 className="font-display text-2xl font-bold tracking-tight text-dark">{title}</h2>
     </div>
   )
 }
@@ -31,105 +35,97 @@ export default async function Home() {
   const profile = profileData as Profile | null
   const skillCategories = profile?.skill_categories ?? []
   const resumeItems = profile?.resume_items ?? []
+  const education = resumeItems.find((r) => r.category === '학력')?.title ?? null
+
+  const infoRows = [
+    { Icon: UserIcon, label: '이름', value: '최원민' },
+    { Icon: CalendarIcon, label: '생년월일', value: profile?.birthdate },
+    { Icon: MapPinIcon, label: '위치', value: profile?.location },
+    { Icon: PhoneIcon, label: '연락처', value: profile?.phone },
+    { Icon: MailIcon, label: '이메일', value: 'jo08198@gmail.com' },
+    { Icon: CapIcon, label: '학력', value: education },
+  ].filter((r): r is { Icon: typeof UserIcon; label: string; value: string } => Boolean(r.value))
 
   return (
     <>
       <Header />
 
-      <section className="relative overflow-hidden bg-dark pb-[88px] pt-24 text-light after:pointer-events-none after:absolute after:-bottom-40 after:-right-[120px] after:h-[380px] after:w-[380px] after:rounded-full after:bg-[radial-gradient(circle,var(--accent-dim)_0%,transparent_72%)] after:opacity-35 after:content-[''] max-md:pb-14 max-md:pt-16">
-        <div className="relative mx-auto grid max-w-[880px] grid-cols-[1.1fr_0.9fr] items-center gap-12 px-6 max-md:grid-cols-1 max-md:gap-8">
-          <div>
-            {profile?.photo_url && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={profile.photo_url}
-                alt="최원민 프로필 사진"
-                className="mb-5 h-[88px] w-[88px] rounded-full border-2 border-accent object-cover"
-              />
-            )}
-            <p className="mb-4 font-mono text-[0.85rem] tracking-[0.08em] text-accent">
-              PORTFOLIO / FULLSTACK DEVELOPER
-            </p>
-            <h1 className="mb-5 text-[clamp(2.1rem,4vw,2.9rem)] font-extrabold leading-[1.25] tracking-tight">
-              구조를 설계하고
-              <br />
-              연결하는 개발자, 최원민
-            </h1>
-            <p className="mb-7 max-w-[42ch] text-[1.05rem] text-muted-light">
-              React · Spring · FastAPI 기반 AI 연동 웹 서비스를 설계하고
-              구현합니다. 화면 설계부터 데이터가 흐르는 구조까지, 전체를
-              이해하고 만드는 것을 중요하게 생각합니다.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <a
-                className="rounded-lg border border-accent bg-accent px-[18px] py-2.5 font-mono text-[0.85rem] font-semibold text-dark transition-colors hover:bg-accent-dim"
-                href="#projects"
-              >
-                프로젝트 보기
-              </a>
-              <a
-                className="rounded-lg border border-border-dark px-[18px] py-2.5 font-mono text-[0.85rem] text-light transition-colors hover:border-accent hover:text-accent"
-                href="mailto:jo08198@gmail.com"
-              >
-                이메일 보내기
-              </a>
-            </div>
-          </div>
-
-          <CodeWindow filename="profile.ts">
-            <div>
-              <span className="ln">1</span>
-              <span className="tag">const</span> developer = {'{'}
-            </div>
-            <div>
-              <span className="ln">2</span>&nbsp;&nbsp;name:{' '}
-              <span className="str">&apos;최원민&apos;</span>,
-            </div>
-            <div>
-              <span className="ln">3</span>&nbsp;&nbsp;stack: [
-              <span className="str">&apos;React&apos;</span>,{' '}
-              <span className="str">&apos;Spring&apos;</span>,{' '}
-              <span className="str">&apos;FastAPI&apos;</span>],
-            </div>
-            <div>
-              <span className="ln">4</span>&nbsp;&nbsp;status:{' '}
-              <span className="str">&apos;신입 지원 중&apos;</span>,
-            </div>
-            <div>
-              <span className="ln">5</span>
-              {'}'}
-            </div>
-          </CodeWindow>
-        </div>
-      </section>
-
-      <section className="px-0 py-[72px] max-md:py-[52px]" id="about">
-        <div className="mx-auto max-w-[880px] px-6">
-          <SectionHead num="01" title="자기소개" />
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-white to-neutral-50 p-8 shadow-card max-md:p-6">
-            <span className="pointer-events-none absolute -right-6 -top-10 select-none font-serif text-[8rem] leading-none text-accent/10">
-              &ldquo;
-            </span>
-            <div className="relative flex items-start gap-7 max-md:flex-col max-md:items-center max-md:text-center">
+      <section
+        className="relative overflow-hidden bg-dark bg-cover bg-center pb-20 pt-24 text-light max-md:pb-14 max-md:pt-16"
+        style={profile?.hero_image_url ? { backgroundImage: `url(${profile.hero_image_url})` } : undefined}
+      >
+        {profile?.hero_image_url && (
+          <div className="absolute inset-0 bg-gradient-to-b from-dark/85 via-dark/85 to-dark" aria-hidden="true" />
+        )}
+        <div className="relative mx-auto max-w-[880px] px-6">
+          <div className="flex flex-wrap items-end justify-between gap-8">
+            <div className="max-w-[560px]">
               {profile?.photo_url && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={profile.photo_url}
                   alt="최원민 프로필 사진"
-                  className="h-28 w-28 flex-shrink-0 rounded-2xl object-cover shadow-md ring-4 ring-accent/10"
+                  className="mb-6 h-[72px] w-[72px] rounded-full border-2 border-accent object-cover"
                 />
               )}
-              <p className="max-w-[62ch] text-[1.08rem] leading-[1.85] text-neutral-700">
-                {profile?.intro || '아직 등록된 자기소개가 없습니다.'}
+              <p className="mb-4 font-mono text-[0.85rem] tracking-[0.08em] text-accent">
+                PORTFOLIO / FULLSTACK DEVELOPER
               </p>
+              <h1 className="mb-6 font-display text-[clamp(2.6rem,6vw,4.2rem)] font-extrabold leading-[1.05] tracking-tight text-light">
+                구조를 설계하고
+                <br />
+                연결하는 개발자
+                <br />
+                <span className="text-accent">최원민</span>
+              </h1>
+              <p className="max-w-[46ch] text-[1.05rem] leading-[1.8] text-muted-light">
+                React · Spring · FastAPI 기반 AI 연동 웹 서비스를 설계하고
+                구현합니다. 화면 설계부터 데이터가 흐르는 구조까지, 전체를
+                이해하고 만드는 것을 중요하게 생각합니다.
+              </p>
+            </div>
+
+            <div className="flex flex-shrink-0 gap-4">
+              <a
+                href="#projects"
+                className="flex h-[150px] w-[150px] flex-shrink-0 flex-col items-center justify-center rounded-full bg-accent text-center font-mono text-[0.85rem] font-semibold text-accent-ink transition-colors hover:bg-accent-dim max-md:h-[120px] max-md:w-[120px]"
+              >
+                프로젝트
+                <br />
+                보기
+                <span aria-hidden="true" className="mt-1 text-lg">
+                  ↓
+                </span>
+              </a>
+              <a
+                href="mailto:jo08198@gmail.com"
+                className="flex h-[150px] w-[150px] flex-shrink-0 flex-col items-center justify-center rounded-full border border-white/25 text-center font-mono text-[0.85rem] text-light transition-colors hover:border-accent hover:text-accent max-md:h-[120px] max-md:w-[120px]"
+              >
+                이메일
+                <br />
+                보내기
+                <span aria-hidden="true" className="mt-1 text-lg">
+                  ↗
+                </span>
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="px-0 py-[72px] max-md:py-[52px]" id="resume">
+      <section className="bg-white px-0 py-[72px] max-md:py-[52px]" id="about">
         <div className="mx-auto max-w-[880px] px-6">
-          <SectionHead num="02" title="이력" />
+          <SectionHead num="01" title="자기소개" />
+
+          <dl className="mb-8 grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2">
+            {infoRows.map(({ Icon, label, value }) => (
+              <div key={label} className="flex items-center gap-3">
+                <Icon className="h-[18px] w-[18px] flex-shrink-0 text-accent" />
+                <dt className="w-16 flex-shrink-0 font-mono text-[0.78rem] text-muted">{label}</dt>
+                <dd className="text-dark">{value}</dd>
+              </div>
+            ))}
+          </dl>
 
           {resumeItems.length > 0 ? (
             <div className="flex flex-col gap-3 rounded-2xl border border-border bg-neutral-50 p-5">
@@ -158,68 +154,34 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="px-0 py-[72px] max-md:py-[52px]" id="skills">
+      <section className="bg-accent-soft px-0 py-[72px] max-md:py-[52px]" id="skills">
         <div className="mx-auto max-w-[880px] px-6">
-          <SectionHead num="03" title="기술 스택" />
-
-          {skillCategories.length > 0 ? (
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-6">
-              {skillCategories.map((c, idx) => {
-                const color = categoryColor(idx)
-                const total = c.primary.length + c.learning.length
-                return (
-                  <div key={c.category} className={`rounded-xl border ${color.border} bg-white p-5 shadow-card`}>
-                    <div className="mb-3 flex items-center gap-2 border-b border-border pb-3">
-                      <span className={`h-2 w-2 rounded-full ${color.dot}`} />
-                      <h3 className="font-mono text-[0.85rem] tracking-wide text-dark">{c.category}</h3>
-                      {total > 0 && (
-                        <span className={`ml-auto rounded-full px-2 py-0.5 text-xs font-semibold ${color.bg} ${color.text}`}>
-                          {total}
-                        </span>
-                      )}
-                    </div>
-
-                    {c.primary.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5">
-                        {c.primary.map((t) => (
-                          <span key={t} className={`rounded-md border px-3 py-1.5 font-mono text-[0.85rem] ${color.tag}`}>
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    {c.learning.length > 0 && (
-                      <>
-                        <p className="mb-1.5 mt-3 text-xs text-muted">학습·경험</p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {c.learning.map((t) => (
-                            <span
-                              key={t}
-                              className="rounded-md border border-border px-2.5 py-1 font-mono text-xs text-muted"
-                            >
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
-          ) : (
-            <p className="font-mono text-sm text-muted">아직 등록된 기술 스택이 없습니다.</p>
-          )}
+          <SectionHead num="02" title="기술 스택" />
+          <SkillsList categories={skillCategories} />
         </div>
       </section>
 
-      <section className="pt-[72px] max-md:pt-[52px]" id="projects">
+      <section className="bg-white px-0 py-[72px] max-md:py-[52px]" id="archiving">
+        <div className="mx-auto max-w-[880px] px-6">
+          <SectionHead num="03" title="Archiving" />
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-xl border border-border bg-light px-5 py-4 shadow-card transition-colors hover:border-accent"
+          >
+            <GithubIcon className="h-5 w-5 flex-shrink-0 text-dark" />
+            <span className="font-mono text-[0.9rem] text-accent">github.com/cwmwater</span>
+            <span className="text-[0.85rem] text-muted">소스 코드 저장소</span>
+          </a>
+        </div>
+      </section>
+
+      <section className="bg-light px-0 py-[72px] max-md:py-[52px]" id="projects">
         <div className="mx-auto max-w-[880px] px-6">
           <SectionHead num="04" title="프로젝트" />
+          <ProjectList projects={projects} />
         </div>
-
-        <ProjectShowcase projects={projects} />
       </section>
 
       <Footer phone={profile?.phone} />

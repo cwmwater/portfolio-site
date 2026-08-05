@@ -35,6 +35,7 @@ export interface Project {
   troubleshooting: ProjectTroubleshootingItem[]
   media: ProjectMediaItem[]
   links: ProjectLink[]
+  is_featured: boolean
   sort_order: number
   created_at: string
 }
@@ -54,7 +55,10 @@ export interface ResumeItem {
 export interface Profile {
   id: number
   photo_url: string | null
+  hero_image_url: string | null
   phone: string | null
+  birthdate: string | null
+  location: string | null
   intro: string
   skill_categories: SkillCategory[]
   resume_items: ResumeItem[]

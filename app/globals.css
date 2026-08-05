@@ -2,10 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Maplestory';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFLight.woff') format('woff');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Maplestory';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFBold.woff') format('woff');
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
-  --accent: #2dd4bf;
-  --accent-dim: #14b8a6;
-  --dark: #0b0f0e;
+  --accent: #1fbf9b;
+  --accent-dim: #159179;
+  --dark: #0b1220;
+  --line: #e1dcd1;
 }
 
 @layer base {
@@ -53,11 +68,11 @@
   .admin-shell input,
   .admin-shell select,
   .admin-shell textarea {
-    @apply rounded-lg border border-border px-3 py-2.5 text-[0.95rem] outline-none transition-colors focus:border-accent;
+    @apply rounded-lg border border-border bg-surface px-3 py-2.5 text-[0.95rem] text-dark outline-none transition-colors focus:border-accent;
   }
 
   .admin-shell button {
-    @apply rounded-lg bg-dark px-3.5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50;
+    @apply rounded-lg bg-accent px-3.5 py-2.5 text-sm font-semibold text-accent-ink transition-opacity hover:opacity-90 disabled:opacity-50;
   }
 
   .admin-shell table {
@@ -153,110 +168,73 @@
 }
 
 /* =====================================================================
-   프로젝트 쇼케이스 — 스크롤 핀 고정 + 이미지/영상 크로스페이드
-   유틸리티만으로 표현하기엔 지나치게 장황해지는 부분(sticky 핀 고정,
-   그라디언트 오버레이, 미디어 크로스페이드, 모바일 폴백)만 커스텀으로 유지.
+   스크롤 동반자 졸라맨 — 상태 4가지
+   top: 맨 위, 양팔 허리에 짚은 대기 포즈 (정적, points로 모양 자체를 바꿈)
+   climbing: 스크롤 중, 사다리 내려가듯 팔을 번갈아 뻗고 다리로 스텝
+   idle: 특정 섹션에 멈춰 있을 때, 한쪽 팔은 턱 괴기 (정적, points로 모양 자체를 바꿈)
+   cheer: 맨 아래 도달, 양팔 번쩍
    ===================================================================== */
-.project-scroller {
-  position: relative;
+/* 각 팔다리 라인의 어깨/골반 좌표(SVG 유저 유닛)를 그대로 회전 기준점으로 사용 */
+.scroll-buddy-arm-l,
+.scroll-buddy-arm-r {
+  transform-origin: 20px 22px;
 }
 
-.project-scene-wrapper {
-  position: relative;
+.scroll-buddy-leg-l,
+.scroll-buddy-leg-r {
+  transform-origin: 20px 45px;
 }
 
-.project-scene {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  align-items: flex-end;
-  background: var(--dark);
+.scroll-buddy-climbing .scroll-buddy-arm-l {
+  animation: buddy-climb-arm-l 0.5s ease-in-out infinite alternate;
 }
 
-.project-scene::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(11, 15, 14, 0.94) 0%,
-    rgba(11, 15, 14, 0.6) 38%,
-    rgba(11, 15, 14, 0.15) 68%,
-    transparent 100%
-  );
-  pointer-events: none;
+.scroll-buddy-climbing .scroll-buddy-arm-r {
+  animation: buddy-climb-arm-r 0.5s ease-in-out infinite alternate;
 }
 
-.project-scene-media {
-  position: absolute;
-  inset: 0;
+.scroll-buddy-climbing .scroll-buddy-leg-l {
+  animation: buddy-leg-l 0.5s ease-in-out infinite alternate;
 }
 
-.project-scene-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.6s ease;
+.scroll-buddy-climbing .scroll-buddy-leg-r {
+  animation: buddy-leg-r 0.5s ease-in-out infinite alternate;
 }
 
-.project-scene-image.is-active {
-  opacity: 1;
-  pointer-events: auto;
+/* 위쪽 사다리 칸을 잡으러 뻗었다가(위) 몸 쪽으로 당기는(아래) 동작 */
+@keyframes buddy-climb-arm-l {
+  from { transform: rotate(-70deg); }
+  to { transform: rotate(15deg); }
 }
 
-.project-scene-media-mobile {
-  display: none;
+@keyframes buddy-climb-arm-r {
+  from { transform: rotate(15deg); }
+  to { transform: rotate(-70deg); }
+}
+
+@keyframes buddy-leg-l {
+  from { transform: rotate(20deg); }
+  to { transform: rotate(-20deg); }
+}
+
+@keyframes buddy-leg-r {
+  from { transform: rotate(-20deg); }
+  to { transform: rotate(20deg); }
+}
+
+.scroll-buddy-cheer .scroll-buddy-arm-l {
+  transform: rotate(-155deg);
+}
+
+.scroll-buddy-cheer .scroll-buddy-arm-r {
+  transform: rotate(155deg);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .project-scene-image {
-    transition: none;
-  }
-}
-
-/* 모바일: 핀 고정 없이 일반 스크롤 + 가로 스와이프 미디어 갤러리 */
-@media (max-width: 768px) {
-  .project-scene-wrapper {
-    height: auto !important;
-  }
-
-  .project-scene {
-    position: static;
-    height: auto;
-    display: block;
-    background: none;
-  }
-
-  .project-scene::after {
-    display: none;
-  }
-
-  .project-scene-media {
-    position: static;
-  }
-
-  .project-scene-media-mobile {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .project-scene-media-mobile img,
-  .project-scene-media-mobile video,
-  .project-scene-media-mobile iframe {
-    flex: 0 0 100%;
-    scroll-snap-align: start;
-    width: 100%;
-    height: 240px;
-    object-fit: cover;
-    border: 0;
+  .scroll-buddy-climbing .scroll-buddy-arm-l,
+  .scroll-buddy-climbing .scroll-buddy-arm-r,
+  .scroll-buddy-climbing .scroll-buddy-leg-l,
+  .scroll-buddy-climbing .scroll-buddy-leg-r {
+    animation: none;
   }
 }

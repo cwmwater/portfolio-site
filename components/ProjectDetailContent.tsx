@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { getYoutubeId } from '@/lib/youtube'
 import GithubIcon from '@/components/icons/GithubIcon'
+import FeatureText from '@/components/FeatureText'
 import { TECH_TAG_CLASS, LINK_BTN_LIGHT_CLASS } from '@/lib/uiClasses'
 import { categoryColor } from '@/lib/palette'
 import type { Project } from '@/lib/types'
@@ -133,14 +134,17 @@ export default function ProjectDetailContent({ project: p }: { project: Project 
         <section className="mb-8">
           <h2 className="mb-3.5 text-lg font-bold text-dark">주요 구현 기능</h2>
           <ul className="flex flex-col gap-2">
-            {features.map((f, idx) => (
-              <li
-                key={idx}
-                className="relative list-none pl-[18px] text-neutral-700 before:absolute before:left-0 before:text-accent-dim before:content-['—']"
-              >
-                {f}
-              </li>
-            ))}
+            {features.map((f, idx) => {
+              const color = categoryColor(idx)
+              return (
+                <li
+                  key={idx}
+                  className={`list-none rounded-lg border ${color.border} border-l-4 bg-white px-4 py-2.5 text-neutral-700 shadow-sm`}
+                >
+                  <FeatureText text={f} />
+                </li>
+              )
+            })}
           </ul>
         </section>
       )}
