@@ -71,18 +71,25 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
             )}
 
             <div className="mt-auto flex flex-wrap gap-2 pt-2">
-              {p.links.map((l, idx) => (
-                <a
-                  key={idx}
-                  href={l.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 px-3 py-1.5 font-mono text-[0.78rem] text-light transition-colors hover:border-accent hover:text-accent"
-                >
-                  {isGithubLink(l) && <GithubIcon />}
-                  {l.label}
-                </a>
-              ))}
+              {p.links.map((l, idx) => {
+                const isGithub = isGithubLink(l)
+                return (
+                  <a
+                    key={idx}
+                    href={l.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 font-mono text-[0.78rem] font-semibold transition-colors ${
+                      isGithub
+                        ? 'border-[#6f93c4]/40 text-[#6f93c4] hover:border-[#6f93c4]'
+                        : 'border-[#d98e4c]/40 text-[#d98e4c] hover:border-[#d98e4c]'
+                    }`}
+                  >
+                    {isGithub && <GithubIcon />}
+                    {l.label}
+                  </a>
+                )
+              })}
               <button
                 type="button"
                 onClick={() => setDetailProject(p)}

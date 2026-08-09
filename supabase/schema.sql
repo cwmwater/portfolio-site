@@ -445,3 +445,69 @@ set
     {"label":"btc-cloud-trader (private)","url":"https://github.com/cwmwater/btc-cloud-trader"}
   ]'::jsonb
 where title = '클라우드 서버 기반 데이터 자동화 시스템';
+
+-- 트레이딩 봇: "서버 구축/운영·배포"처럼 격식있게 들리던 문구를 실제 작업(무료 인스턴스에 MobaXterm SSH로
+-- 접속해 스크립트 상시 실행, Discord로 모니터링)에 맞게 낮춤
+update projects
+set
+  description = 'Oracle Cloud 무료 인스턴스에 MobaXterm으로 접속해 상시 실행 중인 개인용 멀티코인 자동매매 스크립트. 전략 설계부터 실행 관리까지 1인 진행, Discord로 매매 현황을 확인',
+  role = 'Python 자동매매 로직 설계, Oracle Cloud 무료 인스턴스에 MobaXterm SSH로 접속해 스크립트를 상시 실행, Discord Webhook으로 매매 현황 모니터링',
+  main_duty = '전략 설계 · 자동화 스크립트 운영 · Discord 모니터링, 1인 진행'
+where title = '클라우드 서버 기반 데이터 자동화 시스템';
+
+-- 마케튼: 너무 기초적인 기능(Git 형상관리, 보관함) 항목 삭제
+update projects
+set features = array[
+  '3계층 아키텍처 통합 — React ↔ Spring Boot ↔ FastAPI 구조에서, Spring의 FastApiClient가 RestTemplate으로 FastAPI를 동기 호출하고 {success, data, error} 공통 응답 포맷으로 성공/실패를 분기하도록 두 서버 간 계약을 맞춰 실제로 동작하게 연결',
+  '단계별 글 생성 플로우 — 키워드 분석 → 본문 생성 → 제목 키워드 분석 → 제목 생성, 4단계 흐름을 하나의 액션 디스패처(TempPostUpdateServiceImpl.handleAction)로 처리. TempPost 엔티티(1:N KeywordList/TitleList)에 매 단계 입력값·생성 결과·현재 step을 저장해 중간 이탈 후에도 이어작업 가능하도록 설계, 완성 시 FinalPost로 전환. 프론트엔드 단계별 화면(1~3단계+완성)과 진행 상태 라벨링도 직접 설계',
+  'OAuth2 소셜로그인 3사 통합 — Google/Naver/Kakao 응답 구조가 제각각(Kakao는 kakao_account.profile 안에 중첩, Naver는 response 키로 한 번 더 래핑)인 걸 OAuth2UserInfo 공통 인터페이스로 추상화하고 provider별 구현체로 분리, CustomOAuth2UserService에서 registrationId로 분기해 다형성으로 처리. JWT 발급/Redis 리프레시 토큰 저장은 팀원과 공동 작업 영역',
+  '관리자 페이지 프론트엔드 — 회원 관리 매니저, 권한 변경 드롭다운 UI, 관리자 API 연동 레이어(adminApi.js) 구현. 대시보드 통계·유저 목록 등 백엔드 로직은 팀원 담당',
+  'Docker 컨테이너화 — Spring Boot/FastAPI/React 3개 서비스 전부 Dockerfile 직접 작성(FastAPI는 requirements-docker.txt로 프로덕션 의존성만 분리, React는 멀티스테이지 빌드로 node build 후 nginx serve). MySQL/Redis 포함 docker-compose.yml로 로컬 전체 스택을 한 번에 기동하도록 구성',
+  'Oracle Cloud VPS 배포 — RAM 1GB짜리 완전 초기 상태 VPS(Ubuntu 24.04)에 Docker 설치, 2GB 스왑 설정, GHCR(GitHub Container Registry)에 이미지 3개 푸시, 운영용 docker-compose.prod.yml(JVM 힙 제한, 불필요 포트 비공개)로 배포. Oracle Security List와 Ubuntu iptables 양쪽 방화벽을 다 열어야 접속된다는 것까지 직접 확인',
+  'GitHub Actions CI/CD — 3개 저장소 각각에 이미지 빌드→GHCR 푸시→appleboy/ssh-action으로 VPS 배포까지 자동화하는 워크플로우 작성. 3개 저장소 모두 push 한 번으로 자동 배포되는 것 확인 완료',
+  'RAG(검색증강생성) 구조 설계 및 구현 — 톤(tone)마다 예문 하나만 고정으로 넣던 프롬프트 구조를, 요청 컨텍스트(상품 정보·키워드)와 의미적으로 가장 비슷한 예문을 임베딩 유사도로 검색해 넣는 구조로 fastapi-module/backend/frontend 3계층에 걸쳐 전면 재설계. 별도 벡터DB 없이 OpenAI text-embedding-3-small + 순수 Python 코사인 유사도로 경량 구현(1GB RAM VPS 제약 고려), ToneExample 엔티티와 관리 API 신설, 예문 등록/삭제 시 실시간 임베딩 계산. 캠핑/주방/뷰티 카테고리 예문으로 검색 정확도 검증(관련 예문 코사인 유사도 0.33, 무관 예문 0.19~0.24로 구분)',
+  '도메인 + nginx 리버스 프록시 + HTTPS(Let''s Encrypt) — 도메인 구매 후 nginx를 프록시 계층으로 세워 /api/*는 backend로, 나머지는 frontend로 라우팅하도록 재구성하고 backend/frontend 포트 직접 노출 제거. Certbot으로 무료 SSL 인증서 발급, HTTP→HTTPS 자동 리다이렉트, crontab으로 인증서 자동 갱신까지 무중단 구성'
+]
+where title = '마케튼 (Marketten)';
+
+-- 학력에 학위 종류 명시
+update profile
+set resume_items = jsonb_set(
+  resume_items,
+  '{0,title}',
+  '"중부대학교 게임소프트웨어학과 졸업 (4년제 학사 학위)"'
+)
+where id = 1;
+
+-- 수료 항목에 기관명(에이치 아카데미) 명시
+update profile
+set resume_items = jsonb_set(
+  resume_items,
+  '{2,title}',
+  '"에이치 아카데미 · 인공지능 트랜스포메이션을 위한 플랫폼 개발자 양성과정 수료"'
+)
+where id = 1;
+
+-- Skills 요약: 세부 구현 용어는 프로젝트 상세에 이미 있으니 보편적으로 알려진 기술명만 남김
+update profile
+set skill_categories = '[
+  {"category":"Language","primary":["Java","Python","JavaScript","C#"],"learning":[]},
+  {"category":"Backend","primary":["Spring / Spring Boot","JPA","FastAPI"],"learning":[]},
+  {"category":"Frontend","primary":["React"],"learning":[]},
+  {"category":"Data / AI","primary":["PyTorch","Pandas","RAG"],"learning":[]},
+  {"category":"Infra","primary":["MySQL","Redis","Git","Docker","Oracle Cloud","Linux"],"learning":[]},
+  {"category":"Game","primary":["Unity"],"learning":[]}
+]'::jsonb
+where id = 1;
+
+-- Infra에 AWS 추가 (사용 경험 있음)
+update profile
+set skill_categories = '[
+  {"category":"Language","primary":["Java","Python","JavaScript","C#"],"learning":[]},
+  {"category":"Backend","primary":["Spring / Spring Boot","JPA","FastAPI"],"learning":[]},
+  {"category":"Frontend","primary":["React"],"learning":[]},
+  {"category":"Data / AI","primary":["PyTorch","Pandas","RAG"],"learning":[]},
+  {"category":"Infra","primary":["MySQL","Redis","Git","Docker","Oracle Cloud","Linux","AWS"],"learning":[]},
+  {"category":"Game","primary":["Unity"],"learning":[]}
+]'::jsonb
+where id = 1;

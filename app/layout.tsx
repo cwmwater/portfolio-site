@@ -6,8 +6,8 @@ import ScrollBuddy from '@/components/ScrollBuddy'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: '최원민 포트폴리오',
-  description: 'React · Spring · FastAPI 기반 AI 연동 웹 서비스를 만드는 풀스택 개발자',
+  title: '최원민 · Junior Developer',
+  description: 'React · Spring · FastAPI 기반 AI 연동 웹 서비스를 만드는 주니어 개발자',
 }
 
 export default function RootLayout({
