@@ -27,6 +27,9 @@ export interface Project {
   title: string
   period: string | null
   description: string
+  highlights: string[]
+  background: string | null
+  meaning: string | null
   tech_stack: string[]
   team_size: string | null
   main_duty: string | null

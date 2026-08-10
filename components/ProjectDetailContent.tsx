@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { getYoutubeId } from '@/lib/youtube'
 import GithubIcon from '@/components/icons/GithubIcon'
+import { SummaryIcon, BackgroundIcon, MeaningIcon } from '@/components/icons/ProjectDetailIcons'
 import FeatureText from '@/components/FeatureText'
 import { TECH_TAG_CLASS, LINK_BTN_LIGHT_CLASS } from '@/lib/uiClasses'
 import { categoryColor } from '@/lib/palette'
@@ -126,9 +127,32 @@ export default function ProjectDetailContent({ project: p }: { project: Project 
       )}
 
       <section className="mb-8">
-        <h2 className="mb-3.5 text-lg font-bold text-dark">서비스 소개</h2>
+        <h2 className="mb-3.5 flex items-center gap-2 text-lg font-bold text-dark">
+          <SummaryIcon className="text-accent" />
+          서비스 소개
+        </h2>
         <p className="max-w-[68ch] text-neutral-700">{p.description}</p>
       </section>
+
+      {p.background && (
+        <section className="mb-8">
+          <h2 className="mb-3.5 flex items-center gap-2 text-lg font-bold text-dark">
+            <BackgroundIcon className="text-accent" />
+            왜 만들었는지
+          </h2>
+          <p className="max-w-[68ch] text-neutral-700">{p.background}</p>
+        </section>
+      )}
+
+      {p.meaning && (
+        <section className="mb-8">
+          <h2 className="mb-3.5 flex items-center gap-2 text-lg font-bold text-dark">
+            <MeaningIcon className="text-accent" />
+            무엇을 배웠는지
+          </h2>
+          <p className="max-w-[68ch] text-neutral-700">{p.meaning}</p>
+        </section>
+      )}
 
       {features.length > 0 && (
         <section className="mb-8">

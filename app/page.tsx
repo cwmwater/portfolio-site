@@ -30,6 +30,7 @@ export default async function Home() {
     ...p,
     media: p.media ?? [],
     links: p.links ?? [],
+    highlights: p.highlights ?? [],
   }))
   const profile = profileData as Profile | null
   const skillCategories = profile?.skill_categories ?? []
