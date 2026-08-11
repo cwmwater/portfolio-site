@@ -180,7 +180,7 @@ on conflict (id) do update set
 
 insert into projects (
   title, period, description, tech_stack, sort_order, media, links,
-  team_size, main_duty, role, features, troubleshooting, is_featured, background, meaning, highlights
+  team_size, main_duty, role, features, troubleshooting, is_featured, background, meaning, highlights, feature_media
 )
 values (
   '마케튼 (Marketten)',
@@ -198,7 +198,12 @@ values (
   true,
   '국비 부트캠프(K-Digital Training) 6인 팀 프로젝트로 시작했습니다. 기존 블로그 자동 생성 서비스들을 살펴보니, 블로그·뉴스 글을 요약해서 짜깁기하는 수준에 그치는 경우가 많았습니다. 상품 정보와 실제 사용 경험을 반영해 브랜드 톤에 맞는 완성도 높은 마케팅 글을 만들 수 있는 서비스가 있으면 좋겠다고 생각해 이 프로젝트를 기획했습니다.',
   'Spring 백엔드, React 프론트, FastAPI 기반 AI 모듈을 동시에 연동하며 서비스 전체 구조를 처음부터 끝까지 파악하고 실제로 동작하게 만드는 경험을 했습니다. 서로 다른 서버끼리 데이터를 주고받는 방식을 하나씩 맞춰가는 과정에서, 각자 다른 프레임워크로 짠 코드가 실제로 하나의 서비스로 이어지는 걸 직접 확인하며 자신감을 얻었습니다.',
-  array['상품 정보 기반 단계별 마케팅 글 자동 생성', '3계층 아키텍처(React ↔ Spring ↔ FastAPI) 설계', 'OAuth2 소셜로그인 3사 통합', 'RAG 기반 톤 맞춤 문구 생성 구조 설계']
+  array['상품 정보 기반 단계별 마케팅 글 자동 생성', '3계층 아키텍처(React ↔ Spring ↔ FastAPI) 설계', 'OAuth2 소셜로그인 3사 통합', 'RAG 기반 톤 맞춤 문구 생성 구조 설계'],
+  '[
+    {"feature_index":0,"image_url":"/diagrams/marketten-3tier.svg","caption":"React ↔ Spring Boot ↔ FastAPI 3계층 구조의 요청/응답 흐름과 Spring↔FastAPI 공통 응답 계약, 그리고 FastAPI를 별도로 둔 이유를 정리한 다이어그램입니다."},
+    {"feature_index":1,"image_url":"/diagrams/marketten-flow.svg","caption":"키워드 분석 → 본문 생성 → 제목 키워드 분석 → 제목 생성 4단계 흐름과, 각 단계의 입력값·결과·현재 단계를 임시 저장 테이블에 남겨 중간 이탈 후에도 이어서 작업할 수 있도록 설계한 구조입니다."},
+    {"feature_index":6,"image_url":"/diagrams/marketten-rag.svg","caption":"예문 등록 시 임베딩을 계산해 저장하고, 글 생성 요청 시 저장된 임베딩들과 코사인 유사도를 비교해 가장 관련 있는 예문을 찾는 전체 흐름과, 별도 벡터DB 없이 구현한 이유를 정리한 다이어그램입니다."}
+  ]'::jsonb
 )
 on conflict (title) do update set
   period = excluded.period,
@@ -215,6 +220,7 @@ on conflict (title) do update set
   is_featured = excluded.is_featured,
   background = excluded.background,
   meaning = excluded.meaning,
+  feature_media = excluded.feature_media,
   highlights = excluded.highlights;
 
 insert into projects (
@@ -224,7 +230,7 @@ insert into projects (
 values (
   '게임 AI 몬스터 행동 시스템',
   '2025.08 – 2025.12',
-  'Sugeno 퍼지 추론으로 몬스터 행동을 설계하고, 그 판단 데이터를 LSTM에 모방학습시켜 ONNX로 Unity에 재탑재한 게임 AI 파이프라인',
+  'Sugeno 퍼지 추론으로 몬스터 행동을 설계 및 LSTM 모방학습을 통해 Unity에 탑재',
   array['Python', 'PyTorch', 'C#', 'Unity', 'ONNX'],
   2,
   '[]'::jsonb,
@@ -269,7 +275,7 @@ insert into projects (
 values (
   '클라우드 서버 기반 데이터 자동화 시스템',
   '2026.03 – 2026.04',
-  'Oracle Cloud 무료 인스턴스에 MobaXterm으로 접속해 상시 실행 중인 개인용 멀티코인 자동매매 스크립트. 전략 설계부터 실행 관리까지 1인 진행, Discord로 매매 현황을 확인',
+  'Oracle Cloud 무료 인스턴스에서 상시 실행 중인 개인용 멀티코인 자동매매 스크립트',
   array['Python', 'Oracle Cloud', 'Linux', 'Discord Webhook', 'REST API'],
   3,
   '[]'::jsonb,

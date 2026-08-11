@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 620" font-family="'Pretendard', -apple-system, sans-serif">
+  <defs>
+    <marker id="arrowTeal3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1fbf9b" />
+    </marker>
+    <marker id="arrowDash" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#6f93c4" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1040" height="620" fill="#0b1220" />
+
+  <text x="30" y="42" fill="#f6f4ef" font-size="20" font-weight="700">단계별 글 생성 플로우</text>
+
+  <!-- Step boxes -->
+  <rect x="30" y="90" width="210" height="100" rx="14" fill="#123a30" stroke="#1fbf9b" stroke-width="1.5" />
+  <text x="135" y="120" fill="#89c9b6" font-size="11" text-anchor="middle">1단계</text>
+  <text x="135" y="146" fill="#e6fbf4" font-size="15" font-weight="700" text-anchor="middle">키워드 분석</text>
+
+  <rect x="280" y="90" width="210" height="100" rx="14" fill="#123a30" stroke="#1fbf9b" stroke-width="1.5" />
+  <text x="385" y="120" fill="#89c9b6" font-size="11" text-anchor="middle">2단계</text>
+  <text x="385" y="146" fill="#e6fbf4" font-size="15" font-weight="700" text-anchor="middle">본문 생성</text>
+
+  <rect x="530" y="90" width="210" height="100" rx="14" fill="#123a30" stroke="#1fbf9b" stroke-width="1.5" />
+  <text x="635" y="120" fill="#89c9b6" font-size="11" text-anchor="middle">3단계</text>
+  <text x="635" y="146" fill="#e6fbf4" font-size="15" font-weight="700" text-anchor="middle">제목 키워드 분석</text>
+
+  <rect x="780" y="90" width="230" height="100" rx="14" fill="#123a30" stroke="#1fbf9b" stroke-width="1.5" />
+  <text x="895" y="120" fill="#89c9b6" font-size="11" text-anchor="middle">4단계</text>
+  <text x="895" y="146" fill="#e6fbf4" font-size="15" font-weight="700" text-anchor="middle">제목 생성</text>
+
+  <!-- Arrows between steps -->
+  <line x1="240" y1="140" x2="278" y2="140" stroke="#1fbf9b" stroke-width="2" marker-end="url(#arrowTeal3)" />
+  <line x1="490" y1="140" x2="528" y2="140" stroke="#1fbf9b" stroke-width="2" marker-end="url(#arrowTeal3)" />
+  <line x1="740" y1="140" x2="778" y2="140" stroke="#1fbf9b" stroke-width="2" marker-end="url(#arrowTeal3)" />
+
+  <!-- Dashed lines down to storage table -->
+  <line x1="135" y1="190" x2="135" y2="290" stroke="#6f93c4" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrowDash)" />
+  <line x1="385" y1="190" x2="385" y2="290" stroke="#6f93c4" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrowDash)" />
+  <line x1="635" y1="190" x2="635" y2="290" stroke="#6f93c4" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrowDash)" />
+  <line x1="895" y1="190" x2="895" y2="290" stroke="#6f93c4" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrowDash)" />
+
+  <!-- Storage table bar -->
+  <rect x="30" y="300" width="980" height="70" rx="14" fill="#101a2c" stroke="#6f93c4" stroke-width="1.5" />
+  <text x="520" y="330" fill="#cfe0f5" font-size="14" font-weight="700" text-anchor="middle">임시 저장 테이블</text>
+  <text x="520" y="352" fill="#9dbee0" font-size="12" text-anchor="middle">매 단계의 입력값 · 생성 결과 · 현재 단계(step)를 저장</text>
+
+  <!-- Callout: resume -->
+  <rect x="30" y="400" width="480" height="70" rx="12" fill="#101a2c" stroke="#2a3b57" stroke-width="1" />
+  <text x="50" y="426" fill="#f6f4ef" font-size="13" font-weight="700">중간 이탈 후 재개</text>
+  <text x="50" y="448" fill="#c9d6e8" font-size="12">저장된 current step부터 이어서 작업 가능</text>
+
+  <!-- Callout: frontend -->
+  <rect x="530" y="400" width="480" height="70" rx="12" fill="#101a2c" stroke="#2a3b57" stroke-width="1" />
+  <text x="550" y="426" fill="#f6f4ef" font-size="13" font-weight="700">프론트엔드</text>
+  <text x="550" y="448" fill="#c9d6e8" font-size="12">1~3단계 + 완성 화면과 진행 상태 표시 UI 직접 설계</text>
+
+  <!-- Final arrow -->
+  <line x1="520" y1="370" x2="520" y2="398" stroke="#d98e4c" stroke-width="2" />
+  <line x1="520" y1="470" x2="520" y2="498" stroke="#d98e4c" stroke-width="2" marker-end="url(#arrowTeal3)" />
+
+  <!-- Final box -->
+  <rect x="330" y="500" width="380" height="70" rx="14" fill="#4a3218" stroke="#d98e4c" stroke-width="1.5" />
+  <text x="520" y="530" fill="#f6e6d2" font-size="14" font-weight="700" text-anchor="middle">완성 시</text>
+  <text x="520" y="552" fill="#e8b978" font-size="13" text-anchor="middle">최종 게시물로 전환</text>
+</svg>

@@ -16,27 +16,48 @@ const CARD_GRADIENTS = [
   'bg-gradient-to-br from-[#12233d] to-[#0b1220]',
 ]
 
-export default function ProjectList({ projects }: { projects: Project[] }) {
-  const [showAll, setShowAll] = useState(false)
-  const [detailProject, setDetailProject] = useState<Project | null>(null)
-  const [expandedTech, setExpandedTech] = useState<Record<string, boolean>>({})
-  const [overflowingTech, setOverflowingTech] = useState<Record<string, boolean>>({})
-  const techRefs = useRef<Record<string, HTMLDivElement | null>>({})
+// 카드 그라디언트 톤과 맞춘 제목 색 (teal / copper / steel blue)
+const TITLE_COLORS = ['text-[#7fe0c7]', 'text-[#e8b978]', 'text-[#9dbee0]']
+
+// 섹션(설명/기술/링크 등)을 고정 높이로 자르고, 넘칠 때만 "더보기"를 보여주는 공용 블록.
+// 모든 카드에서 같은 섹션이 같은 높이로 정렬되도록 하기 위함
+function ClampBlock({ maxHeightPx, children }: { maxHeightPx: number; children: React.ReactNode }) {
+  const [expanded, setExpanded] = useState(false)
+  const [overflowing, setOverflowing] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     function measure() {
-      const next: Record<string, boolean> = {}
-      for (const [id, el] of Object.entries(techRefs.current)) {
-        if (!el || el.children.length === 0) continue
-        const rowHeight = (el.children[0] as HTMLElement).offsetHeight
-        next[id] = el.scrollHeight > rowHeight + 4
-      }
-      setOverflowingTech(next)
+      const el = ref.current
+      if (!el) return
+      setOverflowing(el.scrollHeight > maxHeightPx + 2)
     }
     measure()
     window.addEventListener('resize', measure)
     return () => window.removeEventListener('resize', measure)
-  }, [projects])
+  }, [maxHeightPx, children])
+
+  return (
+    <div>
+      <div ref={ref} className="overflow-hidden" style={{ maxHeight: expanded ? undefined : maxHeightPx }}>
+        {children}
+      </div>
+      {overflowing && (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          className="mt-1.5 font-mono text-[0.72rem] text-muted-light transition-colors hover:text-accent"
+        >
+          {expanded ? '접기' : '더보기'}
+        </button>
+      )}
+    </div>
+  )
+}
+
+export default function ProjectList({ projects }: { projects: Project[] }) {
+  const [showAll, setShowAll] = useState(false)
+  const [detailProject, setDetailProject] = useState<Project | null>(null)
 
   if (projects.length === 0) {
     return <p className="font-mono text-sm text-muted">아직 등록된 프로젝트가 없습니다.</p>
@@ -61,9 +82,9 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
             key={p.id}
             className={`flex flex-col rounded-2xl border border-white/10 p-6 shadow-card-lg ${CARD_GRADIENTS[i % CARD_GRADIENTS.length]}`}
           >
-            <span className="mb-3 inline-block w-fit rounded-md bg-light px-3 py-1 font-mono text-[0.85rem] font-semibold text-dark">
+            <h3 className={`mb-3 font-mono text-[1.3rem] font-bold ${TITLE_COLORS[i % TITLE_COLORS.length]}`}>
               {p.title}
-            </span>
+            </h3>
 
             {(p.period || p.team_size) && (
               <div className="mb-3 border-b border-white/15 pb-3 font-mono text-[0.78rem] text-muted-light">
@@ -73,47 +94,41 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
               </div>
             )}
 
-            <p className="mb-3 font-semibold text-light">{p.description}</p>
+            <div className="mb-3">
+              <ClampBlock maxHeightPx={104}>
+                <p className="font-semibold text-light">{p.description}</p>
+              </ClampBlock>
+            </div>
 
             {p.highlights.length > 0 && (
-              <ul className="mb-3 flex flex-col gap-1">
-                {p.highlights.map((h, idx) => (
-                  <li key={idx} className="flex gap-2 text-[0.85rem] text-muted-light">
-                    <span className="text-accent">•</span>
-                    {h}
-                  </li>
-                ))}
-              </ul>
+              <div className="mb-3">
+                <ClampBlock maxHeightPx={100}>
+                  <ul className="flex flex-col gap-1">
+                    {p.highlights.map((h, idx) => (
+                      <li key={idx} className="flex gap-2 text-[0.85rem] text-muted-light">
+                        <span className="text-accent">•</span>
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                </ClampBlock>
+              </div>
             )}
 
             {p.tech_stack.length > 0 && (
               <div className="mb-3">
-                <div
-                  ref={(el) => {
-                    techRefs.current[p.id] = el
-                  }}
-                  className={`flex flex-wrap gap-1.5 overflow-hidden ${
-                    expandedTech[p.id] ? '' : 'max-h-[28px]'
-                  }`}
-                >
-                  {p.tech_stack.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-md border border-white/20 bg-white/10 px-2.5 py-1 font-mono text-[0.75rem] text-accent"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                {overflowingTech[p.id] && (
-                  <button
-                    type="button"
-                    onClick={() => setExpandedTech((prev) => ({ ...prev, [p.id]: !prev[p.id] }))}
-                    className="mt-1.5 font-mono text-[0.72rem] text-muted-light transition-colors hover:text-accent"
-                  >
-                    {expandedTech[p.id] ? '접기' : '더보기'}
-                  </button>
-                )}
+                <ClampBlock maxHeightPx={28}>
+                  <div className="flex flex-wrap gap-1.5">
+                    {p.tech_stack.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-md border border-white/20 bg-white/10 px-2.5 py-1 font-mono text-[0.75rem] text-accent"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </ClampBlock>
               </div>
             )}
 

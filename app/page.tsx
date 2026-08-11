@@ -59,14 +59,6 @@ export default async function Home() {
         )}
         <div className="relative mx-auto max-w-[880px] px-6">
           <div className="flex flex-col items-center gap-6 text-center">
-            {profile?.photo_url && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={profile.photo_url}
-                alt="최원민 프로필 사진"
-                className="h-24 w-24 flex-shrink-0 rounded-full border-2 border-accent object-cover"
-              />
-            )}
             <div className="max-w-[560px]">
               <p className="mb-4 font-mono text-[0.85rem] tracking-[0.08em] text-accent">
                 PORTFOLIO / JUNIOR DEVELOPER
@@ -128,15 +120,25 @@ export default async function Home() {
         <div className="mx-auto max-w-[880px] px-6">
           <SectionHead title="자기소개" />
 
-          <dl className="mb-6 grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2">
-            {infoRows.map(({ Icon, label, value }) => (
-              <div key={label} className="flex items-center gap-3">
-                <Icon className="h-[18px] w-[18px] flex-shrink-0 text-accent" />
-                <dt className="w-16 flex-shrink-0 font-mono text-[0.78rem] text-muted">{label}</dt>
-                <dd className="text-dark">{value}</dd>
-              </div>
-            ))}
-          </dl>
+          <div className="mb-6 flex flex-col items-center gap-6 sm:flex-row sm:items-start">
+            {profile?.photo_url && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={profile.photo_url}
+                alt="최원민 프로필 사진"
+                className="h-28 w-28 flex-shrink-0 rounded-full border-2 border-accent object-cover"
+              />
+            )}
+            <dl className="grid flex-1 grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2">
+              {infoRows.map(({ Icon, label, value }) => (
+                <div key={label} className="flex items-center gap-3">
+                  <Icon className="h-[18px] w-[18px] flex-shrink-0 text-accent" />
+                  <dt className="w-16 flex-shrink-0 font-mono text-[0.78rem] text-muted">{label}</dt>
+                  <dd className="text-dark">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
 
           {resumeItems.length > 0 ? (
             <div className="flex flex-col gap-3 rounded-2xl border border-border bg-neutral-50 p-5">
