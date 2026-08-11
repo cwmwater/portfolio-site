@@ -30,6 +30,13 @@
 
   body {
     @apply bg-light text-dark antialiased font-sans leading-relaxed;
+    cursor: url('/cursor-teal.svg') 4 2, auto;
+  }
+
+  a,
+  button,
+  [role='button'] {
+    cursor: url('/cursor-teal.svg') 4 2, pointer;
   }
 
   a {
@@ -167,74 +174,20 @@
   }
 }
 
-/* =====================================================================
-   스크롤 동반자 졸라맨 — 상태 4가지
-   top: 맨 위, 양팔 허리에 짚은 대기 포즈 (정적, points로 모양 자체를 바꿈)
-   climbing: 스크롤 중, 사다리 내려가듯 팔을 번갈아 뻗고 다리로 스텝
-   idle: 특정 섹션에 멈춰 있을 때, 한쪽 팔은 턱 괴기 (정적, points로 모양 자체를 바꿈)
-   cheer: 맨 아래 도달, 양팔 번쩍
-   ===================================================================== */
-/* 각 팔다리 라인의 어깨/골반 좌표(SVG 유저 유닛)를 그대로 회전 기준점으로 사용 */
-.scroll-buddy-arm-l,
-.scroll-buddy-arm-r {
-  transform-origin: 20px 22px;
+.click-ripple {
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  border: 1.5px solid #4be3c4;
+  box-shadow: 0 0 8px 2px rgba(31, 191, 155, 0.5);
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0.9;
+  animation: click-ripple-expand 0.45s ease-out forwards;
 }
 
-.scroll-buddy-leg-l,
-.scroll-buddy-leg-r {
-  transform-origin: 20px 45px;
-}
-
-.scroll-buddy-climbing .scroll-buddy-arm-l {
-  animation: buddy-climb-arm-l 0.5s ease-in-out infinite alternate;
-}
-
-.scroll-buddy-climbing .scroll-buddy-arm-r {
-  animation: buddy-climb-arm-r 0.5s ease-in-out infinite alternate;
-}
-
-.scroll-buddy-climbing .scroll-buddy-leg-l {
-  animation: buddy-leg-l 0.5s ease-in-out infinite alternate;
-}
-
-.scroll-buddy-climbing .scroll-buddy-leg-r {
-  animation: buddy-leg-r 0.5s ease-in-out infinite alternate;
-}
-
-/* 위쪽 사다리 칸을 잡으러 뻗었다가(위) 몸 쪽으로 당기는(아래) 동작 */
-@keyframes buddy-climb-arm-l {
-  from { transform: rotate(-70deg); }
-  to { transform: rotate(15deg); }
-}
-
-@keyframes buddy-climb-arm-r {
-  from { transform: rotate(15deg); }
-  to { transform: rotate(-70deg); }
-}
-
-@keyframes buddy-leg-l {
-  from { transform: rotate(20deg); }
-  to { transform: rotate(-20deg); }
-}
-
-@keyframes buddy-leg-r {
-  from { transform: rotate(-20deg); }
-  to { transform: rotate(20deg); }
-}
-
-.scroll-buddy-cheer .scroll-buddy-arm-l {
-  transform: rotate(-155deg);
-}
-
-.scroll-buddy-cheer .scroll-buddy-arm-r {
-  transform: rotate(155deg);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-buddy-climbing .scroll-buddy-arm-l,
-  .scroll-buddy-climbing .scroll-buddy-arm-r,
-  .scroll-buddy-climbing .scroll-buddy-leg-l,
-  .scroll-buddy-climbing .scroll-buddy-leg-r {
-    animation: none;
+@keyframes click-ripple-expand {
+  to {
+    transform: translate(-50%, -50%) scale(3.2);
+    opacity: 0;
   }
 }

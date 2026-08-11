@@ -37,6 +37,17 @@ export function BackgroundIcon({ className }: { className?: string }) {
   )
 }
 
+export function ImageIcon({ className }: { className?: string }) {
+  return base(
+    <>
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2" />
+      <circle cx="9" cy="10" r="1.6" />
+      <path d="m5 17 4.5-4.5c.6-.6 1.4-.6 2 0L15 16l1.2-1.2c.6-.6 1.4-.6 2 0L20.5 17" />
+    </>,
+    className
+  )
+}
+
 export function MeaningIcon({ className }: { className?: string }) {
   return base(
     <>

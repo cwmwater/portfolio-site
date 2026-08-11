@@ -33,7 +33,7 @@ export default function ProjectDetailPanel({
       aria-hidden={!project}
     >
       <div
-        className={`max-h-[85vh] w-full max-w-[640px] overflow-y-auto rounded-2xl bg-light shadow-card-lg transition-transform duration-300 ${
+        className={`max-h-[85vh] w-full max-w-[800px] overflow-y-auto rounded-2xl bg-light shadow-card-lg transition-transform duration-300 ${
           project ? 'scale-100' : 'scale-95'
         }`}
         onClick={(e) => e.stopPropagation()}

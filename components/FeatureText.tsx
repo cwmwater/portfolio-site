@@ -9,11 +9,8 @@ function splitFeature(text: string): [string, string] | null {
 
 const OPEN_BRACKETS = new Set(['(', '{', '['])
 const CLOSE_BRACKETS = new Set([')', '}', ']'])
-// "(p, q, r)" · "{success, data, error}"처럼 짧은 괄호는 통째로 보호하되, "(Kakao는 ~, Naver는 ~)"처럼
-// 긴 설명형 괄호는 그 자체가 문장이라 안에서도 쉼표/마침표 기준으로 계속 끊는다
-const SHORT_BRACKET_MAX_LEN = 20
-
-// text 안에서 "보호할" 짧은 괄호 구간([시작, 끝) 인덱스)만 골라낸다
+// 괄호 안(길이와 무관하게)은 그 자체로 하나의 단위로 보고 쉼표 기준으로 쪼개지 않는다 —
+// "(불필요한 열 제거, 3D 거리 값 정규화, ...)"처럼 괄호 안이 단순 나열이어도 통째로 유지되어야 읽기 편함
 function shortBracketRanges(text: string): Array<[number, number]> {
   const stack: number[] = []
   const ranges: Array<[number, number]> = []
@@ -22,9 +19,7 @@ function shortBracketRanges(text: string): Array<[number, number]> {
     if (OPEN_BRACKETS.has(ch)) stack.push(i)
     else if (CLOSE_BRACKETS.has(ch)) {
       const start = stack.pop()
-      if (start !== undefined && i - start - 1 <= SHORT_BRACKET_MAX_LEN) {
-        ranges.push([start, i])
-      }
+      if (start !== undefined) ranges.push([start, i])
     }
   }
   return ranges
@@ -50,7 +45,8 @@ function splitArrowSteps(text: string): string[] {
   return steps
 }
 
-// 짧은 괄호 밖의 쉼표/마침표에서 끊는다. 마침표는 뒤에 공백(또는 문장 끝)이 와야만 경계로 본다
+// 괄호 밖의 문장 경계(마침표)에서만 끊는다 — 쉼표·em dash는 문장 내 연결용으로 두고 쪼개지 않는다.
+// 마침표는 뒤에 공백(또는 문장 끝)이 와야만 경계로 본다
 // (kakao_account.profile, torch.onnx.export, 89.83% 같은 코드/숫자의 점은 보호)
 function splitClauses(text: string): string[] {
   const protectedRanges = shortBracketRanges(text)
@@ -59,10 +55,7 @@ function splitClauses(text: string): string[] {
   for (let i = 0; i < text.length; i++) {
     if (isInsideRange(protectedRanges, i)) continue
     const ch = text[i]
-    if (ch === ',') {
-      clauses.push(text.slice(start, i + 1))
-      start = i + 1
-    } else if (ch === '.' && (text[i + 1] === undefined || text[i + 1] === ' ')) {
+    if (ch === '.' && (text[i + 1] === undefined || text[i + 1] === ' ')) {
       clauses.push(text.slice(start, i + 1))
       start = i + 1
     }
@@ -78,7 +71,7 @@ function FeatureBody({ text }: { text: string }) {
       <ol className="flex flex-col gap-1">
         {steps.map((s, i) => (
           <li key={i} className="flex gap-2">
-            {i > 0 && <span className="flex-shrink-0 text-muted">→</span>}
+            <span className="flex-shrink-0 text-accent">{i > 0 ? '→' : '•'}</span>
             <span>{s.trim()}</span>
           </li>
         ))}
@@ -89,36 +82,54 @@ function FeatureBody({ text }: { text: string }) {
   const clauses = splitClauses(text)
   if (clauses.length > 1) {
     return (
-      <div className="flex flex-col gap-1">
+      <ul className="flex flex-col gap-2">
         {clauses.map((c, i) => (
-          <p key={i}>{c}</p>
+          <li key={i} className="flex list-none gap-2">
+            <span className="flex-shrink-0 text-accent">•</span>
+            <span>{c.replace(/[,.]\s*$/, '')}</span>
+          </li>
         ))}
-      </div>
+      </ul>
     )
   }
 
-  return <p>{text}</p>
+  return (
+    <ul className="flex flex-col gap-2">
+      <li className="flex list-none gap-2">
+        <span className="flex-shrink-0 text-accent">•</span>
+        <span>{text.replace(/[,.]\s*$/, '')}</span>
+      </li>
+    </ul>
+  )
 }
 
 export default function FeatureText({
   text,
-  titleClassName = 'mb-1 font-semibold text-dark',
+  titleClassName = 'font-semibold text-dark',
   className,
+  actions,
 }: {
   text: string
   titleClassName?: string
   className?: string
+  actions?: React.ReactNode
 }) {
   const parts = splitFeature(text)
   return (
     <div className={className}>
       {parts ? (
         <>
-          <p className={titleClassName}>{parts[0]}</p>
+          <div className="mb-1 flex items-start justify-between gap-3">
+            <p className={titleClassName}>{parts[0]}</p>
+            {actions}
+          </div>
           <FeatureBody text={parts[1]} />
         </>
       ) : (
-        <FeatureBody text={text} />
+        <>
+          {actions && <div className="mb-1 flex justify-end">{actions}</div>}
+          <FeatureBody text={text} />
+        </>
       )}
     </div>
   )

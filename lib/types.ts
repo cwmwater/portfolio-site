@@ -22,6 +22,12 @@ export interface ProjectTroubleshootingItem {
   solution: string
 }
 
+export interface ProjectFeatureMedia {
+  feature_index: number
+  image_url: string
+  caption: string
+}
+
 export interface Project {
   id: string
   title: string
@@ -35,6 +41,7 @@ export interface Project {
   main_duty: string | null
   role: string | null
   features: string[]
+  feature_media: ProjectFeatureMedia[]
   troubleshooting: ProjectTroubleshootingItem[]
   media: ProjectMediaItem[]
   links: ProjectLink[]

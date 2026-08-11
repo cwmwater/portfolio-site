@@ -1,9 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { getYoutubeId } from '@/lib/youtube'
 import GithubIcon from '@/components/icons/GithubIcon'
-import { SummaryIcon, BackgroundIcon, MeaningIcon } from '@/components/icons/ProjectDetailIcons'
+import { SummaryIcon, BackgroundIcon, MeaningIcon, ImageIcon } from '@/components/icons/ProjectDetailIcons'
 import FeatureText from '@/components/FeatureText'
 import { TECH_TAG_CLASS, LINK_BTN_LIGHT_CLASS } from '@/lib/uiClasses'
 import { categoryColor } from '@/lib/palette'
@@ -14,11 +15,14 @@ function isGithubLink(link: { label: string; url: string }) {
 }
 
 export default function ProjectDetailContent({ project: p }: { project: Project }) {
-  const media = p.media ?? []
+  // 이미지는 관련 기능 항목 옆 아이콘으로 붙여서 보여주므로, 상단 갤러리는 영상만 노출
+  const media = (p.media ?? []).filter((m) => m.type !== 'image')
   const links = p.links ?? []
   const features = p.features ?? []
+  const featureMedia = p.feature_media ?? []
   const troubleshooting = p.troubleshooting ?? []
   const [lightboxUrl, setLightboxUrl] = useState<string | null>(null)
+  const [expandedImageIdx, setExpandedImageIdx] = useState<number | null>(null)
 
   useEffect(() => {
     if (!lightboxUrl) return
@@ -131,7 +135,7 @@ export default function ProjectDetailContent({ project: p }: { project: Project 
           <SummaryIcon className="text-accent" />
           서비스 소개
         </h2>
-        <p className="max-w-[68ch] text-neutral-700">{p.description}</p>
+        <p className="max-w-[84ch] text-neutral-700">{p.description}</p>
       </section>
 
       {p.background && (
@@ -140,7 +144,7 @@ export default function ProjectDetailContent({ project: p }: { project: Project 
             <BackgroundIcon className="text-accent" />
             왜 만들었는지
           </h2>
-          <p className="max-w-[68ch] text-neutral-700">{p.background}</p>
+          <p className="max-w-[84ch] text-neutral-700">{p.background}</p>
         </section>
       )}
 
@@ -150,7 +154,7 @@ export default function ProjectDetailContent({ project: p }: { project: Project 
             <MeaningIcon className="text-accent" />
             무엇을 배웠는지
           </h2>
-          <p className="max-w-[68ch] text-neutral-700">{p.meaning}</p>
+          <p className="max-w-[84ch] text-neutral-700">{p.meaning}</p>
         </section>
       )}
 
@@ -160,12 +164,44 @@ export default function ProjectDetailContent({ project: p }: { project: Project 
           <ul className="flex flex-col gap-2">
             {features.map((f, idx) => {
               const color = categoryColor(idx)
+              const fMedia = featureMedia.find((m) => m.feature_index === idx)
+              const isExpanded = expandedImageIdx === idx
               return (
                 <li
                   key={idx}
                   className={`list-none rounded-lg border ${color.border} border-l-4 bg-white px-4 py-2.5 text-neutral-700 shadow-sm`}
                 >
-                  <FeatureText text={f} />
+                  <FeatureText
+                    text={f}
+                    actions={
+                      fMedia && (
+                        <button
+                          type="button"
+                          onClick={() => setExpandedImageIdx(isExpanded ? null : idx)}
+                          className={`flex flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1 font-mono text-[0.68rem] font-semibold transition-colors ${
+                            isExpanded
+                              ? 'border-accent bg-accent text-accent-ink'
+                              : 'border-accent bg-accent-soft text-accent-dim hover:bg-accent hover:text-accent-ink'
+                          }`}
+                        >
+                          <ImageIcon className="h-3.5 w-3.5" />
+                          이미지 보기
+                        </button>
+                      )
+                    }
+                  />
+                  {fMedia && isExpanded && (
+                    <div className="mt-3 border-t border-border pt-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={fMedia.image_url}
+                        alt={fMedia.caption}
+                        onClick={() => setLightboxUrl(fMedia.image_url)}
+                        className="mb-2 w-full cursor-zoom-in rounded-lg border border-border object-contain"
+                      />
+                      <p className="text-[0.85rem] text-muted">{fMedia.caption}</p>
+                    </div>
+                  )}
                 </li>
               )
             })}
@@ -207,22 +243,29 @@ export default function ProjectDetailContent({ project: p }: { project: Project 
         </section>
       )}
 
-      {lightboxUrl && (
-        <div
-          className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-black/90 p-6"
-          onClick={() => setLightboxUrl(null)}
-        >
-          <button
-            className="absolute right-5 top-5 text-3xl leading-none text-white/80 hover:text-white"
+      {lightboxUrl &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-black/90 p-6"
             onClick={() => setLightboxUrl(null)}
-            aria-label="닫기"
           >
-            ×
-          </button>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={lightboxUrl} alt="확대된 이미지" className="max-h-[90vh] max-w-[90vw] cursor-default rounded-lg object-contain" onClick={(e) => e.stopPropagation()} />
-        </div>
-      )}
+            <button
+              className="absolute right-5 top-5 text-3xl leading-none text-white/80 hover:text-white"
+              onClick={() => setLightboxUrl(null)}
+              aria-label="닫기"
+            >
+              ×
+            </button>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={lightboxUrl}
+              alt="확대된 이미지"
+              className="max-h-[90vh] max-w-[90vw] cursor-default rounded-lg object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>,
+          document.body
+        )}
     </>
   )
 }
