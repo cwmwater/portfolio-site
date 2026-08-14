@@ -22,10 +22,9 @@ module.exports = {
         border: '#e1dcd1',
       },
       fontFamily: {
-        // 사이트 전반(본문·라벨·태그·버튼)을 메이플스토리체로 통일, 폰트 미지원 글자만 Pretendard로 폴백
-        sans: ['Maplestory', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'Malgun Gothic', 'sans-serif'],
-        display: ['Maplestory', 'Pretendard', '-apple-system', 'sans-serif'],
-        mono: ['Maplestory', 'JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
+        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'Malgun Gothic', 'sans-serif'],
+        display: ['Pretendard', '-apple-system', 'sans-serif'],
+        mono: ['Pretendard', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
       },
       boxShadow: {
         card: '0 10px 30px -12px rgba(15, 23, 22, 0.15)',

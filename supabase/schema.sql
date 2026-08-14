@@ -162,9 +162,9 @@ values (
   'https://pansfwryctxokvmssywb.supabase.co/storage/v1/object/public/portfolio-images/profile/1786066801692.jpeg',
   'https://pansfwryctxokvmssywb.supabase.co/storage/v1/object/public/portfolio-images/hero/1785917777642.jpg',
   'React, Spring, FastAPI를 연동한 3계층 아키텍처를 직접 설계하고 구현한 풀스택 개발자입니다. 단순히 기능을 구현하는 데 그치지 않고, 서비스 전체 데이터 흐름을 이해하고 설계하는 것을 중요하게 생각합니다. 마케튼(Marketten) 프로젝트에서 GitHub 저장소 관리자로 6인 팀의 브랜치 통합을 총괄하며 AI 서비스 통합, OAuth2 기반 소셜 로그인 구축, 3계층 통신 구조 설계를 직접 경험했습니다. 또한 게임 AI 프로젝트에서는 데이터 설계부터 LSTM 모델 학습, Unity 엔진 통합까지 전체 파이프라인을 직접 구현하며 복잡한 시스템 간 연동 능력을 키웠습니다. Spring 백엔드를 중심으로 전문성을 발전시키면서, 프론트엔드와 AI 서비스까지 아우르는 풀스택 개발자로 성장하고 있습니다.',
-  '010-3747-5289',
+  null,
   '[{"primary":["Java","Python","JavaScript","C#"],"category":"Language","learning":[]},{"primary":["Spring / Spring Boot","JPA","FastAPI"],"category":"Backend","learning":[]},{"primary":["React"],"category":"Frontend","learning":[]},{"primary":["PyTorch","Pandas","RAG"],"category":"Data / AI","learning":[]},{"primary":["MySQL","Redis","Git","Docker","Oracle Cloud","Linux","AWS"],"category":"Infra","learning":[]},{"primary":["Unity"],"category":"Game","learning":[]}]'::jsonb,
-  '[{"title":"중부대학교 게임소프트웨어학과 졸업 (4년제 학사 학위)","period":"2020.03~2026.02","category":"학력"},{"title":"정보처리기사 (최종합격)","period":"2026.06","category":"자격증"},{"title":"에이치 아카데미 · 인공지능 트랜스포메이션을 위한 플랫폼 개발자 양성과정 수료","period":"2025.04~2025.10","category":"수료"}]'::jsonb,
+  '[{"title":"중부대학교 게임소프트웨어학과 학사","period":"2020.03~2026.02","category":"학력"},{"title":"정보처리기사","period":"2026.06","category":"자격증"},{"title":"H 아카데미 · 인공지능 트랜스포메이션을 위한 플랫폼 개발자 양성과정 수료","period":"2025.04~2025.10","category":"수료"}]'::jsonb,
   '2001.03.22',
   '경기도 고양시 덕양구'
 )
@@ -186,23 +186,36 @@ values (
   '마케튼 (Marketten)',
   '2025.10 – 진행 중',
   '상품 정보만 입력하면 단계별로 마케팅 블로그 글을 생성해주는 웹 서비스',
-  array['Spring Boot', 'JPA', 'MySQL', 'Redis', 'React', 'FastAPI', 'JWT', 'OAuth2', 'Docker', 'Docker Compose', 'GitHub Actions', 'Oracle Cloud VPS', 'RAG', 'nginx', 'Let''s Encrypt'],
+  array['Spring Boot', 'JPA', 'MySQL', 'Redis', 'React', 'FastAPI', 'JWT', 'OAuth2', 'Docker', 'CI/CD', 'OCI', 'RAG'],
   1,
   '[{"url":"https://youtu.be/c47sxZk141s","type":"youtube"}]'::jsonb,
   '[{"url":"https://github.com/cwmwater/Marketten","label":"Marketten"},{"url":"https://github.com/cwmwater/Marketten-React","label":"Marketten-React"},{"url":"https://github.com/cwmwater/mkt-module","label":"mkt-module"},{"url":"https://marketten.site","label":"marketten.site (배포)"}]'::jsonb,
   '6명',
   'GitHub 저장소 관리자 · 글 생성 플로우 · 소셜로그인 · FastAPI 연동 · 인프라(Docker/CI-CD/RAG/nginx) 담당',
-  'GitHub 저장소 관리자로 6인 팀 브랜치 통합 총괄, 글 생성 플로우·OAuth2 소셜로그인 3사 통합·FastAPI 연동 설계. 이후 Docker 컨테이너화·GitHub Actions CI/CD·RAG 구조 설계·nginx/HTTPS 배포는 개인적으로 이어서 진행',
-  array['3계층 아키텍처 통합 — React ↔ Spring Boot ↔ FastAPI 구조에서, Spring이 FastAPI를 동기 호출하는 전용 클라이언트 구현. {success, data, error} 공통 응답 형식으로 성공/실패를 구분하도록 두 서버 간 통신 규칙을 맞춰 실제로 연동.', '단계별 글 생성 플로우 — 키워드 분석 → 본문 생성 → 제목 키워드 분석 → 제목 생성, 4단계 흐름을 하나의 로직에서 단계별로 나눠 처리. 임시 저장 테이블에 매 단계 입력값·생성 결과·현재 단계를 저장해 중간에 나갔다 와도 이어서 작업할 수 있도록 설계. 완성되면 최종 게시물로 전환. 프론트엔드 단계별 화면(1~3단계+완성)과 진행 상태 표시도 직접 설계.', 'OAuth2 소셜로그인 3사 통합 — Google/Naver/Kakao 응답 구조가 제각각(Kakao는 프로필 정보가 한 번 더 중첩되고, Naver는 응답 값이 한 번 더 감싸진 구조)인 것을 공통 형태로 통일. 플랫폼별로 세부 처리만 따로 나눠서 처리하도록 설계. JWT 발급/Redis 리프레시 토큰 저장은 팀원과 공동 작업 영역.', 'Docker 컨테이너화 — Spring Boot/FastAPI/React 3개 서비스 전부 Dockerfile 직접 작성(FastAPI는 프로덕션 의존성만 분리, React는 멀티스테이지 빌드로 빌드 후 nginx로 서비스). MySQL/Redis 포함 docker-compose로 로컬 전체 스택을 한 번에 기동하도록 구성.', 'Oracle Cloud VPS 배포 — RAM 1GB의 완전 초기 상태 VPS(Ubuntu 24.04)에 Docker 설치. 2GB 스왑 설정, GitHub 컨테이너 레지스트리에 이미지 3개 푸시. 운영용 설정(JVM 힙 제한, 불필요 포트 비공개)으로 배포. 클라우드 방화벽과 서버 내부 방화벽 양쪽을 다 열어야 접속된다는 것까지 직접 확인.', 'GitHub Actions CI/CD — 3개 저장소 각각에 이미지 빌드→레지스트리 푸시→서버 배포까지 자동화하는 워크플로우 작성. 3개 저장소 모두 push 한 번으로 자동 배포되는 것까지 확인.', 'RAG(검색증강생성) 구조 설계 및 구현 — 톤(tone)마다 예문 하나만 고정으로 넣던 프롬프트 구조를, 요청 내용(상품 정보·키워드)과 의미적으로 가장 비슷한 예문을 자동으로 찾아 넣는 구조로 백엔드/AI 서버/프론트 전 구간 재설계. 별도 벡터DB 없이 OpenAI 임베딩 API + 코사인 유사도 계산만으로 경량 구현(1GB RAM VPS 제약 고려). 예문을 저장하는 테이블과 관리 API를 새로 만들고, 예문 등록 시 실시간으로 임베딩을 계산해 저장, 본문 생성 요청 시점에 저장된 임베딩들과 유사도를 비교해 가장 관련 있는 예문을 검색하도록 처리. 서로 다른 주제의 예문 3개로 검색 정확도를 검증 — 관련 있는 예문은 유사도 0.33, 무관한 예문은 0.19~0.24로 명확히 구분됨을 확인.', '도메인 + nginx 리버스 프록시 + HTTPS(Let''s Encrypt) — 도메인 구매 후 nginx를 프록시 계층으로 세워 API 요청은 백엔드로, 나머지는 프론트엔드로 라우팅하도록 재구성. 백엔드/프론트 포트 직접 노출 제거. Certbot으로 무료 SSL 인증서 발급, HTTP→HTTPS 자동 리다이렉트와 인증서 자동 갱신까지 무중단 구성.'],
-  '[{"title":"FastAPI 연동 트러블슈팅","problem":"Postman으로 FastAPI 엔드포인트를 테스트하던 중 Spring이 보낸 JSON 값이 전달되지 않는 문제 발견","solution":"엔드포인트 파라미터가 Form 방식(form-urlencoded)으로 선언돼 있어 JSON 형식 데이터를 못 받아들이던 것이 원인임을 진단, 관련 엔드포인트 5개를 모두 JSON 바디를 받도록 수정해 해결"},{"title":"GHCR 이미지 푸시 권한 오류","problem":"GitHub Actions에서 빌드한 이미지를 이미지 레지스트리에 푸시할 때 계속 거부됨","solution":"저장소의 Actions 권한을 읽기 전용에서 읽기/쓰기로 바꾸고, 패키지 소유 계정 쪽 접근 권한도 함께 열어줘야 한다는 것을 단계적으로 원인을 좁혀가며 해결"},{"title":"배포 인프라 오류 3건","problem":"사용하던 베이스 이미지가 배포 저장소에서 삭제됨 / 환경변수 값 형식 오류로 디코딩 실패 / 프론트엔드 API 주소 설정 누락으로 인증 오류 발생","solution":"각각 대체 이미지 교체, 올바른 값으로 재설정, 누락된 설정값 추가로 해결"},{"title":"HTTPS 전환 후 Mixed Content 오류","problem":"HTTPS 전환 직후 브라우저가 보안 정책 위반으로 API 호출을 차단","solution":"프론트엔드가 빌드 시점에 저장해둔 API 주소가 예전 값이었던 것이 원인 — 새 주소 기준으로 다시 빌드해 해결"},{"title":"GitHub Actions 배포 실패 (Service Unavailable)","problem":"재배포 중 GitHub Actions가 일시적으로 실패","solution":"GitHub 쪽 일시 장애로 판단, 재실행으로 해결"}]'::jsonb,
+  '- 단계별 글 작성 및 이어쓰기 기능 구현
+- Spring Boot와 FastAPI 간 AI 요청·응답 연동
+- Google·Naver·Kakao 소셜 로그인 구현
+- 관련 예문 검색 및 AI 생성 결과 반영
+- Docker 실행 환경과 GitHub Actions 배포 자동화 구성
+- nginx 리버스 프록시와 HTTPS 배포 환경 구성',
+  array['RAG(검색증강생성) 구조 설계 및 구현 — 기존에는 톤(tone)별 예문 하나만 고정해서 AI에게 전달했지만, 상품 정보와 키워드에 의미가 가까운 예문을 자동으로 찾아 AI 글 생성에 반영하도록 개선. 예문 등록 시 실시간으로 임베딩을 계산해 저장, 본문 생성 요청 시점에 저장된 임베딩들과 유사도를 비교해 가장 관련 있는 예문을 검색하도록 처리. 별도 벡터DB 없이 OpenAI 임베딩(텍스트를 숫자 벡터로 변환) API + 코사인 유사도 계산만으로 경량 구현(1GB RAM VPS 제약 고려). 서로 다른 주제의 예문 3개를 대상으로 관련 예문은 유사도 0.33, 무관한 예문은 0.19~0.24로 구분되는 것을 확인해 검색 결과가 의도대로 동작하는지 검증.', 'React–Spring Boot–FastAPI 3계층 구조 설계 — React의 사용자 요청을 Spring Boot가 받아 필요한 데이터를 정리하고, FastAPI에 AI 생성을 요청한 뒤 결과를 다시 React 화면에 전달하는 3계층 구조 구성', '단계별 AI 생성 파이프라인 구축 — 주제 설정, 초안 생성, 글 복사의 3단계 흐름 중, 초안 생성 단계에서 본문 생성, 제목 키워드 분석, 제목 생성이 순서대로 진행되며 이전 결과를 다음 요청에 전달하도록 구현. 제목 키워드는 상품 정보가 아닌 에디터에서 편집 중인 본문 내용을 분석해 추출하고, 제목 생성은 이 키워드와 본문 내용을 함께 반영하도록 구성. 본문 생성은 소주제를 먼저 생성한 뒤 해당 내용을 본문 작성 요청에 포함해 구현. 각 단계의 AI 호출이 완료될 때마다 결과를 임시 저장글에 반영해, 생성 과정에서 중단되더라도 이전 단계의 결과를 유지할 수 있도록 구성.', 'Google·Naver·Kakao 소셜 로그인 구현 — Google·Naver·Kakao의 중첩된 사용자 정보 응답을 공통 인터페이스로 변환해 로그인 제공자별 차이 분리. 이메일을 기준으로 기존 계정을 확인해 중복 가입을 방지하고, 다른 소셜 로그인 방식을 기존 계정에 연결. 소셜 로그인 성공 후 일반 로그인과 동일한 토큰 발급 흐름으로 연결하고, 재발급용 토큰은 JavaScript에서 접근할 수 없는 쿠키로 전달.', 'Docker 컨테이너화 — 프로덕션 의존성만 분리해 pywin32·jupyter 등 개발용 패키지가 운영 이미지에 포함되지 않도록 구성. React는 멀티스테이지 빌드로 빌드 도구가 포함되지 않은 실행 이미지를 구성해 경량화(빌드 스테이지 1.87GB → 최종 이미지 108MB, 약 17배 감소). healthcheck로 MySQL·Redis가 단순히 실행 중인지가 아니라 실제 연결 가능한 상태인지 확인한 뒤 백엔드가 실행되도록 기동 순서 구성. 1GB RAM VPS의 제한된 자원을 고려해 Spring Boot의 JVM 최대 힙을 384MB로 설정.', 'GitHub Actions CI/CD — backend, fastapi-module, frontend 3개 저장소에 서비스별 배포 워크플로우 작성. 코드 push를 기준으로 Docker 이미지 빌드와 GitHub Container Registry 업로드 자동화. 운영 서버에서는 변경된 서비스의 이미지만 내려받고 해당 컨테이너만 재실행하도록 구성. 프론트엔드 API 주소는 빌드 단계에 주입. 이미지 업로드 오류는 저장소 Actions 권한과 이미지 저장소의 GitHub 저장소 연결 설정을 각각 확인해 해결.', '도메인 + nginx 리버스 프록시 + HTTPS — nginx를 외부 요청을 받아 프론트엔드와 백엔드로 나누어 전달하는 중간 서버로 구성. API 요청은 Spring Boot로, 나머지 요청은 React 서비스로 전달하고 각 서버 포트를 외부에 직접 노출하지 않도록 설정. HTTP 요청은 HTTPS로 자동 전환. 서버 예약 작업으로 인증서 갱신 여부를 매일 확인하고, 갱신 후 nginx 설정만 다시 읽도록 해 기존 연결을 끊지 않고 새 인증서를 반영.'],
+  '[{"title":"이미지 저장소 업로드 권한 오류","problem":"GitHub Actions에서 빌드한 이미지를 이미지 저장소에 올릴 때 계속 거부됨","cause":"저장소 Actions 기본 권한이 읽기 전용이라 자동 발급되는 인증 토큰에 애초에 쓰기 권한이 없었음. 권한을 읽기/쓰기로 바꿔도 계속 거부됐는데, 이미지가 로컬에서 개인용 인증 토큰으로 먼저 올라가며 저장소가 아닌 개인 계정 소속으로 등록돼 있던 게 2차 원인","solution":"저장소 Actions 권한을 읽기/쓰기로 변경하고, 이미지 저장소 설정에서 해당 저장소를 쓰기 권한으로 별도 연결"},{"title":"HTTPS 전환 후 API 호출이 차단되는 오류","problem":"HTTPS로 전환한 직후 페이지에서 API 호출이 전부 실패, 브라우저가 HTTPS 페이지에서 HTTP API를 호출한다며 차단","cause":"빌드 도구가 환경변수를 빌드 시점에 결과물에 정적으로 박아넣는데, 프론트엔드가 예전 HTTP 주소로 빌드되어 있었음","solution":"배포 워크플로우의 빌드 단계 환경변수를 새 HTTPS 주소로 수정 후 재빌드·재배포, 새 탭에서 콘솔·네트워크 로그를 재확인해 정상 동작 확인"},{"title":"소셜 로그인 콜백이 프론트엔드로 잘못 라우팅됨","problem":"카카오/구글/네이버 로그인 콜백 처리가 정상 동작하지 않음","cause":"nginx가 /api/*만 백엔드로 보내고 나머지는 전부 프론트엔드로 보내는 구조였는데, 소셜 로그인 콜백이 사용하는 /oauth2/*·/login/oauth2/* 경로는 /api 밑이 아니라서 프론트엔드로 잘못 가고 있었음","solution":"nginx에 /oauth2/, /login/oauth2/ 경로를 추가해 백엔드로 라우팅하도록 수정"}]'::jsonb,
   true,
-  '국비 부트캠프(K-Digital Training) 6인 팀 프로젝트로 시작했습니다. 기존 블로그 자동 생성 서비스들을 살펴보니, 블로그·뉴스 글을 요약해서 짜깁기하는 수준에 그치는 경우가 많았습니다. 상품 정보와 실제 사용 경험을 반영해 브랜드 톤에 맞는 완성도 높은 마케팅 글을 만들 수 있는 서비스가 있으면 좋겠다고 생각해 이 프로젝트를 기획했습니다.',
-  'Spring 백엔드, React 프론트, FastAPI 기반 AI 모듈을 동시에 연동하며 서비스 전체 구조를 처음부터 끝까지 파악하고 실제로 동작하게 만드는 경험을 했습니다. 서로 다른 서버끼리 데이터를 주고받는 방식을 하나씩 맞춰가는 과정에서, 각자 다른 프레임워크로 짠 코드가 실제로 하나의 서비스로 이어지는 것을 직접 확인하며 자신감을 얻었습니다.',
-  array['상품 정보 기반 단계별 마케팅 글 자동 생성', '3계층 아키텍처(React ↔ Spring ↔ FastAPI) 설계', 'OAuth2 소셜로그인 3사 통합', 'RAG 기반 톤 맞춤 문구 생성 구조 설계'],
+  '- 기존 서비스의 한계: 기존 자동 생성 서비스는 블로그·뉴스 내용을 조합해 상품의 특징과 실제 사용 경험을 충분히 반영하기 어려웠음
+- 개선 방향: 상품명·특징·사용 경험·키워드를 입력받아 상품에 맞는 마케팅 글을 생성하는 방향으로 개선
+- 작성 흐름: 정보를 단계적으로 입력하고 생성 결과를 확인·수정할 수 있는 작성 흐름 구성',
+  '- 서버 간 데이터 흐름 이해: React에서 보낸 요청을 Spring Boot가 처리하고 FastAPI의 AI 결과를 다시 화면에 전달하는 전체 흐름 구현
+- 외부 AI API 활용: 상품 정보·사용 경험·키워드·문체를 구분해 GPT API에 전달하고 생성 결과를 서비스 형식에 맞게 가공
+- 컨테이너 기반 실행 환경 구성: React·Spring Boot·FastAPI·MySQL을 Docker로 실행하고 서비스 간 의존 관계 구성
+- 배포와 운영 문제 해결: nginx를 통해 외부 요청을 프론트엔드와 백엔드로 분리하고 HTTPS·인증서 자동 갱신 적용
+- 오류 원인 분석: API 주소·소셜 로그인 경로·이미지 저장소 권한 문제를 로그와 네트워크 요청으로 확인하고 해결',
+  array['RAG 기반 톤 맞춤 문구 생성', '3계층 아키텍처(React ↔ Spring ↔ FastAPI) 설계', '단계별 AI 생성 파이프라인 구축', 'Google·Naver·Kakao 소셜 로그인 구현'],
   '[
-    {"feature_index":0,"image_url":"/diagrams/marketten-3tier.svg","caption":"React ↔ Spring Boot ↔ FastAPI 3계층 구조의 요청/응답 흐름과 Spring↔FastAPI 공통 응답 계약, 그리고 FastAPI를 별도로 둔 이유를 정리한 다이어그램입니다."},
-    {"feature_index":1,"image_url":"/diagrams/marketten-flow.svg","caption":"키워드 분석 → 본문 생성 → 제목 키워드 분석 → 제목 생성 4단계 흐름과, 각 단계의 입력값·결과·현재 단계를 임시 저장 테이블에 남겨 중간 이탈 후에도 이어서 작업할 수 있도록 설계한 구조입니다."},
-    {"feature_index":6,"image_url":"/diagrams/marketten-rag.svg","caption":"예문 등록 시 임베딩을 계산해 저장하고, 글 생성 요청 시 저장된 임베딩들과 코사인 유사도를 비교해 가장 관련 있는 예문을 찾는 전체 흐름과, 별도 벡터DB 없이 구현한 이유를 정리한 다이어그램입니다."}
+    {"feature_index":0,"image_url":"/diagrams/marketten-rag.svg","caption":"예문 등록 시 임베딩을 계산해 저장하고, 글 생성 요청 시 저장된 임베딩들과 코사인 유사도를 비교해 가장 관련 있는 예문을 찾는 전체 흐름과, 별도 벡터DB 없이 구현한 이유를 정리한 다이어그램입니다."},
+    {"feature_index":1,"image_url":"/diagrams/marketten-3tier.svg","caption":"React가 사용자 요청을 보내면 Spring Boot가 인증·데이터 정리 후 FastAPI로 라우팅하고, FastAPI가 OpenAI를 호출해 결과를 다시 위 계층으로 돌려주는 3계층 구조를 정리한 다이어그램입니다."},
+    {"feature_index":2,"image_url":"/diagrams/marketten-step-pipeline.svg","caption":"주제 설정, 초안 생성, 글 복사로 이어지는 3단계 UI 흐름과, 초안 생성 화면 안에서 본문 생성 → 제목 키워드 분석 → 제목 생성이 순서대로 진행되는 내부 처리 구조를 정리한 다이어그램입니다."},
+    {"feature_index":5,"image_url":"/diagrams/marketten-cicd.svg","caption":"backend·fastapi-module·frontend 3개 저장소가 각자의 워크플로우로 이미지를 빌드해 GHCR에 올리고, 운영 서버에서는 변경된 저장소의 이미지만 pull해 해당 컨테이너만 재실행하는 배포 구조를 정리한 다이어그램입니다."},
+    {"feature_index":6,"image_url":"/diagrams/marketten-nginx.svg","caption":"nginx가 API 요청은 Spring Boot로, 나머지는 React로 나누어 전달하는 라우팅 구조와, 서버 예약 작업이 인증서 갱신을 확인해 nginx reload로 기존 연결을 끊지 않고 새 인증서를 반영하는 무중단 흐름을 정리한 다이어그램입니다."}
   ]'::jsonb
 )
 on conflict (title) do update set
@@ -230,24 +243,33 @@ insert into projects (
 values (
   '게임 AI 몬스터 행동 시스템',
   '2025.08 – 2025.12',
-  'Sugeno 퍼지 추론으로 몬스터 행동을 설계 및 LSTM 모방학습을 통해 Unity에 탑재',
+  '게임 상태를 바탕으로 몬스터 행동을 결정하고, 퍼지 AI의 행동 데이터를 LSTM으로 학습해 Unity에서 실시간 추론하는 몬스터 AI 시스템',
   array['Python', 'PyTorch', 'C#', 'Unity', 'ONNX'],
   2,
   '[]'::jsonb,
   '[{"url":"https://github.com/cwmwater/monster-ai-behavior","label":"monster-ai-behavior"},{"url":"https://github.com/cwmwater/monster-ai-unity","label":"monster-ai-unity"}]'::jsonb,
   '3명',
   '몬스터/보스 AI 전담',
-  '몬스터/보스 AI 전담 — 계층형 퍼지 상태머신(HFSM) 설계, 모방학습 파이프라인 구축, LSTM 학습·ONNX 변환, 보스 몬스터 페이즈 시스템 설계',
-  array['계층형 퍼지 상태머신(HFSM) — 체력과 거리를 각각 낮음/중간/높음, 가까움/중간/먼 3단계로 구분. 규칙별 계산식으로 점수를 매겨 가중평균을 내는 방식(Sugeno 퍼지 추론)으로 상위 상태(대기/접근/전투/광폭) 결정. 거리 기준으로 하위 상태를 고르는 2단계 구조로 설계. 근접형/원거리형/슬로우형/일벌형/중형 보스 등 9개 이상 몬스터 종류가 공유하는 실제 프로덕션 로직.', '모방학습(imitation learning) 파이프라인 — 퍼지 시스템이 실제 플레이 중 만들어낸 (거리·각도·체력·속성관계·오염도 → 행동) 데이터를 매 프레임 정규화해 기록 → 좌표를 회전각 기반 값으로 변환해 각도 계산의 불연속 문제를 해결 → PyTorch 2-layer LSTM(32→16 hidden, Dropout 0.5)으로 학습 → ONNX 형식으로 변환 → Unity에서 0.1초 간격으로 실시간 추론하며 확률 계산으로 행동을 결정', '데이터 전처리 튜닝 — 전처리 코드의 기본 틀은 수업 제공. 게임 데이터에 맞춘 튜닝(불필요한 열 제거, 3D 거리 값 정규화, 데이터를 일정 간격으로 나눠 과적합을 방지하는 처리)은 직접 작업.', '보스 몬스터 페이즈 시스템 — 체력 기준 3단계 페이즈 × 4가지 공격 패턴(수비/균형/공격/광폭) 조합. 페이즈가 바뀔 때마다 이벤트로 상태 변화를 알리는 방식으로 구현. 여왕벌이 일벌 부대를 지휘하는 구조로 설계.'],
-  '[{"title":"LSTM 학습 데이터 정의 불명확","problem":"몬스터 행동에 필요한 속성 정의가 불명확해 LSTM 학습 오류 발생","solution":"속성을 체계적으로 나열하고 정규화를 적용해 학습 안정성 확보"},{"title":"PyTorch ↔ Unity 입출력 구조 불일치","problem":"PyTorch와 Unity 추론 엔진 간 입출력 데이터 구조가 맞지 않아 연동 오류 발생","solution":"ONNX 변환 후 입출력 구조를 Unity가 요구하는 형식에 맞게 재설계"}]'::jsonb,
+  '- 몬스터·보스 AI 전담
+- 체력·거리·속성 정보를 이용한 계층형 퍼지 상태머신 설계
+- 퍼지 AI 행동 데이터 수집 및 LSTM 학습 구조 구성
+- PyTorch 모델 학습과 ONNX 변환, Unity 실시간 추론 연동
+- 체력 단계별 보스 페이즈와 공격 패턴 구현',
+  array['퍼지 AI 행동 데이터를 활용한 LSTM 모방학습 파이프라인 — 퍼지 시스템이 플레이 중 선택한 행동과 당시의 거리·각도·체력·속성 관계·오염도를 게임 데이터로 수집. 좌표 기반 방향 값을 회전각 기준으로 변환하고 입력값을 정규화해 각도 값의 불연속 문제 완화. 전처리한 시계열 데이터를 PyTorch 2층 LSTM 모델(은닉 상태 크기 32에서 16으로 축소, Dropout 0.5)로 학습. 학습한 모델을 ONNX 형식으로 변환해 Unity에서 사용할 수 있도록 구성. Unity에서 0.1초 간격으로 모델을 호출하고, 행동별 출력 확률 중 가장 높은 값을 기준으로 행동 선택.', '계층형 퍼지 상태머신(HFSM) — 체력과 거리를 각각 낮음·중간·높음, 가까움·중간·먼 3단계로 구분. 각 상태 조합에 점수를 부여하고 가중평균을 계산해 대기·접근·전투·광폭 등 상위 행동 결정. 상위 행동이 정해진 뒤 거리와 몬스터 유형을 기준으로 세부 행동 선택. 근접형·원거리형·슬로우형·일벌형·중형 보스 등 9개 이상의 몬스터 유형에 공통 적용할 수 있는 구조로 구성.', '보스 몬스터 페이즈 시스템 — 보스 체력에 따라 3단계 페이즈로 전환. 각 페이즈에 수비·균형·공격·광폭 4가지 공격 성향 적용. 페이즈 전환 시 이벤트를 발생시켜 공격 패턴과 행동 상태 변경. 여왕벌 보스와 일벌 몬스터의 행동이 연계되도록 구성.', '데이터 전처리 튜닝 — 게임 데이터에 맞춰 불필요한 열 제거. 3D 거리 값을 학습에 사용할 수 있는 범위로 정규화. 시계열 데이터를 일정한 간격으로 나누어 LSTM 입력 형태로 변환. 입력값과 행동 라벨의 순서를 맞춰 학습 데이터 구성.'],
+  '[{"title":"LSTM 학습 데이터 정의 불명확","problem":"학습에 사용할 입력 속성이 정리되지 않아 초기 모델의 행동 예측이 일정하지 않음","cause":"체력·거리만으로는 행동 차이를 설명하기 어려웠고, 각도·속성 관계·오염도와 같은 상태 정보가 빠져 있었음","solution":"행동에 영향을 주는 입력 속성을 다시 정의하고 각 값의 범위를 맞추도록 정규화 적용, 게임 상태와 행동 라벨의 관계를 정리해 LSTM 학습에 사용할 수 있는 데이터셋 구성"},{"title":"PyTorch와 Unity 간 입출력 구조 불일치","problem":"PyTorch에서 학습한 모델을 Unity에서 실행할 때 입력·출력 데이터 구조가 맞지 않아 추론 오류 발생","cause":"ONNX 변환 후 모델의 입력 차원과 출력 텐서 구조가 Unity에서 처리하도록 작성한 형식과 달랐음","solution":"변환된 모델의 입력·출력 구조를 확인하고 Unity에서 전달하는 데이터 순서와 행동 결과 처리 방식을 수정, Unity에서 게임 상태를 모델에 전달하고 행동별 출력값을 받아 몬스터 행동을 결정하는 흐름 연결"}]'::jsonb,
   true,
-  '전공 수업의 팀 프로젝트로, 교수님의 제안을 통해 퍼지 추론을 활용한 몬스터 행동 AI를 설계했습니다. 정해진 규칙에 따라 행동하는 1단계 프로젝트를 진행한 이후, 교수님께서 데이터를 학습해 상황에 따라 보다 능동적으로 판단하는 AI로 발전시켜보자는 방향을 제안하셨습니다. 이에 2단계에서는 LSTM을 추가 적용하여 시간에 따른 행동 패턴을 학습하고, 기존 규칙 기반 AI를 학습 기반 AI로 확장했습니다.',
-  '퍼지 추론은 체력·거리와 같은 현재 상태를 그때그때 규칙에 대입해 행동을 결정하는 방식인 반면, LSTM은 시간에 따른 입력 데이터를 시퀀스로 구성하고 이전 상태와 현재 입력의 관계를 학습해 행동을 예측한다는 점에서 서로 다른 접근임을 체감했습니다. 또한 LSTM 학습 데이터를 구성하면서 라벨과 입력값을 CSV로 추출하고 정규화하는 과정을 직접 경험하며, 데이터의 형태와 스케일을 적절하게 맞추는 것이 학습 과정에 중요하다는 것을 배웠습니다. 특히 퍼지 추론에서는 사용하지 않았던 각도, 속성 간 관계, 오염도 등의 정보를 입력값에 추가하면서, AI의 판단에 필요한 데이터를 어떻게 정의하고 구성할 것인지도 고민하게 되었습니다.',
-  array['계층형 퍼지 상태머신(HFSM) 설계', '모방학습 파이프라인 구축 (LSTM → ONNX → Unity)', '보스 몬스터 페이즈 시스템 설계'],
+  '- 기존 규칙 기반 AI의 한계: 미리 정한 조건에 따라 현재 게임 상태에 맞는 행동을 선택할 수는 있었지만, 시간에 따른 행동 흐름을 학습해 다음 행동을 예측하기는 어려웠음
+- 학습 기반 AI로 확장: 퍼지 AI가 실제 플레이 중 선택한 행동과 당시의 게임 상태를 학습 데이터로 수집하고, LSTM 모델이 시간에 따른 행동 패턴을 학습하도록 구성
+- Unity 적용 및 비교: 학습한 LSTM 모델을 Unity에 적용해 퍼지 규칙 기반 행동과 학습 기반 행동을 비교할 수 있는 구조 구현',
+  '- 퍼지 추론과 LSTM의 역할 구분: 퍼지 추론은 현재 체력·거리와 같은 상태를 규칙에 대입해 즉시 행동을 결정하고, LSTM은 시간 순서가 있는 상태 데이터를 바탕으로 다음 행동을 예측하는 방식으로 역할을 분리
+- 학습 데이터 구성: 거리·각도·체력·속성 관계·오염도와 행동 결과를 수집하고, 입력값의 범위를 맞추기 위해 정규화와 불필요한 열 제거 적용
+- 입력값 설계: 체력과 거리만 사용하던 초기 입력에 각도·속성 관계·오염도를 추가해 몬스터 행동에 영향을 주는 상태 정보 확장
+- 모델 실행 환경 연결: PyTorch에서 학습한 LSTM 모델을 ONNX로 변환하고 Unity의 입력·출력 형식에 맞춰 실시간 추론 구조 구성',
+  array['모방학습 파이프라인 구축 (LSTM → ONNX → Unity)', '계층형 퍼지 상태머신(HFSM) 설계', '보스 몬스터 페이즈 시스템 설계'],
   '[
-    {"feature_index":0,"image_url":"https://pansfwryctxokvmssywb.supabase.co/storage/v1/object/public/portfolio-images/projects/1785771445061.png","caption":"특정 입력값(체력 30, 거리 8)에서 퍼지 규칙들이 어떻게 평가되어 최종 행동으로 역퍼지화되는지 보여주는 실행 예시. Combat과 Berserk 규칙이 동시에 활성화되어 가중평균으로 최종 출력값(1.491)이 결정됩니다."},
-    {"feature_index":1,"image_url":"https://pansfwryctxokvmssywb.supabase.co/storage/v1/object/public/portfolio-images/projects/1785771463765.png","caption":"퍼지 추론 결과를 라벨로 삼아 CSV 데이터를 만들고, 이 데이터로 LSTM을 학습시켜 ONNX로 변환한 뒤 Unity에 실시간 추론기로 탑재하기까지의 전체 파이프라인입니다."},
-    {"feature_index":3,"image_url":"https://pansfwryctxokvmssywb.supabase.co/storage/v1/object/public/portfolio-images/projects/1785771466814.png","caption":"QueenBeeAI를 중심으로 페이즈 전환(BossPhaseSystem), 공격 패턴(BossAttackPattern), 일벌 유닛(BossWorkBeeAI), 벌집 스폰(BossHoneyComb)이 상호작용하는 보스 AI 클래스 구조입니다."}
+    {"feature_index":0,"image_url":"https://pansfwryctxokvmssywb.supabase.co/storage/v1/object/public/portfolio-images/projects/1785771463765.png","caption":"퍼지 추론 결과를 라벨로 삼아 CSV 데이터를 만들고, 이 데이터로 LSTM을 학습시켜 ONNX로 변환한 뒤 Unity에 실시간 추론기로 탑재하기까지의 전체 파이프라인입니다."},
+    {"feature_index":1,"image_url":"https://pansfwryctxokvmssywb.supabase.co/storage/v1/object/public/portfolio-images/projects/1785771445061.png","caption":"특정 입력값(체력 30, 거리 8)에서 퍼지 규칙들이 어떻게 평가되어 최종 행동으로 역퍼지화되는지 보여주는 실행 예시. Combat과 Berserk 규칙이 동시에 활성화되어 가중평균으로 최종 출력값(1.491)이 결정됩니다."},
+    {"feature_index":2,"image_url":"https://pansfwryctxokvmssywb.supabase.co/storage/v1/object/public/portfolio-images/projects/1785771466814.png","caption":"QueenBeeAI를 중심으로 페이즈 전환(BossPhaseSystem), 공격 패턴(BossAttackPattern), 일벌 유닛(BossWorkBeeAI), 벌집 스폰(BossHoneyComb)이 상호작용하는 보스 AI 클래스 구조입니다."}
   ]'::jsonb
 )
 on conflict (title) do update set
@@ -270,25 +292,37 @@ on conflict (title) do update set
 
 insert into projects (
   title, period, description, tech_stack, sort_order, media, links,
-  team_size, main_duty, role, features, troubleshooting, is_featured, background, meaning, highlights
+  team_size, main_duty, role, features, troubleshooting, is_featured, background, meaning, highlights, feature_media
 )
 values (
   '클라우드 서버 기반 데이터 자동화 시스템',
   '2026.03 – 2026.04',
-  'Oracle Cloud 무료 인스턴스에서 상시 실행 중인 개인용 멀티코인 자동매매 스크립트',
+  '외부 거래 API에서 시세와 잔고를 조회하고, 여러 조건을 충족한 경우 주문과 알림을 자동으로 처리하도록 구성한 Python 기반 개인 프로젝트',
   array['Python', 'Oracle Cloud', 'Linux', 'Discord Webhook', 'REST API'],
   3,
   '[]'::jsonb,
   '[{"url":"https://github.com/cwmwater/btc-cloud-trader","label":"btc-cloud-trader (private)"}]'::jsonb,
   '1명',
   '전략 설계 · 자동화 스크립트 운영 · Discord 모니터링, 1인 진행',
-  'Python 자동매매 로직 설계, Oracle Cloud 무료 인스턴스에 MobaXterm SSH로 접속해 스크립트를 상시 실행, Discord Webhook으로 매매 현황 모니터링',
-  array['다중 조건 매매 전략 — 이동평균선 교차(MA10/30), 추세 강도(ADX>25), 과매수·과매도(RSI<60), 거래량, 상위 시간대(4시간봉) 흐름까지 여러 지표가 동시에 조건을 만족할 때만 진입. 여러 버전을 반복 실험하며 파라미터를 조정해 가장 안정적인 조합 채택.', '리스크 관리 — 변동성 지표(ATR) 기반으로 손절·익절 폭을 정하고, 수익이 난 뒤 고점 대비 일정 비율 이상 하락하면 자동 청산하는 트레일링스탑 적용. 종목별 보유 자산을 슬롯 수로 나눠 배분하는 멀티 포지션 구조로 운용.', '패턴 감지·신호 스코어링 — 이동평균선 교차, 추세 강도, 과매수·과매도, 변동성 밴드(볼린저밴드) 이탈, 거래량 급증 등 11가지 패턴을 감지해 0~100점 신호 스코어로 환산. 규칙 기반 시황 코멘트를 자동 생성해 Discord로 전송.'],
-  '[{"title":"포지션 상태 동기화 문제","problem":"초기엔 매매가 체결돼도 로컬 상태 파일에 반영이 안 돼 직접 수정해야 하는 불편함이 있었음","solution":"재시작 시 거래소 잔고를 스캔해 포지션을 자동 복구하고, 매 실행마다 로컬 기록과 실제 잔고 차이를 맞추도록 개선"},{"title":"API 요청 빈도 이슈","problem":"종목별 개별 조회 시 요청이 잦아 연결이 끊기는 문제 발생","solution":"현재가 일괄 조회 방식으로 변경해 요청 횟수 절감"}]'::jsonb,
+  '- Python 자동매매 로직 설계 및 구현
+- 외부 거래 API를 이용한 시세 조회·주문·잔고 확인 로직 구성
+- 다중 조건 기반 진입·청산 전략과 포지션 상태 관리 구현
+- Oracle Cloud VPS에 SSH로 접속해 자동매매 스크립트 상시 실행 환경 구성
+- Discord Webhook을 이용한 매매 신호·실행 결과 알림 구현',
+  array['11개 시장 조건 감지 및 매매 신호 점수화 — 이동평균선 교차, 추세 강도, RSI, 볼린저밴드 이탈, 거래량 급증 등 11개 조건을 감지. 각 조건의 충족 여부를 0~100점의 내부 점수로 환산해 매매 신호의 강도 표시(실제 수익 가능성이 아닌 조건 충족 정도를 나타내는 규칙 기반 점수). 감지된 조건과 점수를 바탕으로 현재 시장 상태를 요약해 Discord로 전송.', '다중 조건 매매 전략 — 이동평균선 교차(MA10/30), 추세 강도(ADX), RSI, 거래량, 상위 시간대(4시간봉) 흐름까지 여러 조건을 동시에 확인한 뒤 진입. 단기 지표뿐 아니라 상위 시간대 흐름을 함께 확인해 단일 지표에 의존하지 않도록 구성. 파라미터 조합별 백테스트 비교 결과를 바탕으로 사용할 조건과 값 선정.', '리스크 관리 — ATR(평균 실제 변동폭)을 기준으로 종목별 손절·익절 범위 계산. 수익이 발생한 뒤 고점 대비 일정 비율 이상 하락하면 포지션을 자동 청산하는 트레일링스탑 적용. 여러 종목에 자산을 나누어 배분하고, 종목별 최대 보유 수를 제한하는 멀티 포지션 구조 구성.'],
+  '[{"title":"포지션 상태 동기화 문제","problem":"주문 체결 후 로컬 상태 파일이 갱신되지 않아 실제 보유 포지션과 프로그램 기록이 달라짐","cause":"로컬 파일을 기준으로만 포지션을 관리하고, 외부 거래 시스템의 실제 잔고·체결 상태를 다시 확인하지 않는 구조","solution":"프로그램 시작 시 외부 잔고와 보유 포지션을 조회해 로컬 상태를 복구하고, 매 실행 주기마다 실제 잔고와 로컬 기록의 차이를 확인하도록 수정. 프로그램 재시작이나 상태 파일 누락 이후에도 실제 보유 상태를 기준으로 매매를 이어갈 수 있는 복구 흐름 구성"},{"title":"API 요청 빈도 문제","problem":"여러 종목의 현재가를 개별적으로 조회하면서 API 요청이 빠르게 증가하고 연결 오류 발생","cause":"종목마다 동일한 종류의 요청을 반복해 호출하는 구조","solution":"종목별 개별 조회를 현재가 일괄 조회 방식으로 변경해 한 번의 요청으로 여러 종목 데이터를 수집. 반복 요청을 줄이고 여러 종목의 현재가를 한 주기 안에 처리하는 구조로 개선"}]'::jsonb,
   true,
-  '최근 자본을 어떻게 효과적으로 굴릴지, 재테크에 관심이 생겼습니다. 주식이나 비트코인 같은 시장을 자동화해서 고정적인 수익을 낼 수 있다면 좋겠다는 생각에서 이 프로젝트를 시작했습니다.',
-  '투자 전략을 개인적으로 공부해보고 싶은 마음도 있었고, Oracle Cloud와 서버 운영 경험까지 쌓을 수 있어서 공부와 실전을 동시에 챙길 수 있는 프로젝트였습니다.',
-  array['다중 조건 매매 전략 설계 및 반복 백테스트', 'ATR 기반 리스크 관리 (손절·익절·트레일링스탑)', '11가지 패턴 감지·신호 스코어링, Discord 알림']
+  '- 반복 작업 자동화: 여러 종목의 시세를 반복해서 확인하고 매매 조건을 판단하는 작업을 자동화하기 위해 프로젝트 시작
+- 자동매매 흐름 구성: 단순히 매매 신호만 출력하는 것이 아니라, 외부 거래 API를 통한 시세·잔고 조회부터 조건 판단·주문·포지션 관리까지 하나의 흐름으로 구성
+- 서버 운영과 상태 확인: Oracle Cloud 서버에서 자동매매 스크립트를 상시 실행하고, 매매 결과를 Discord 알림으로 확인할 수 있는 운영 환경 구성',
+  '- 외부 API 기반 자동화: 시세·잔고 조회, 주문 요청, 실행 결과 확인을 하나의 주기적인 실행 흐름으로 구성
+- 상태 동기화: 로컬 파일의 기록만 신뢰하지 않고 거래소 잔고와 실제 포지션을 기준으로 프로그램 상태를 복구하는 구조 구현
+- API 요청 관리: 종목별 개별 조회로 요청이 증가하는 문제를 일괄 조회 방식으로 변경해 외부 API 호출 구조 개선
+- 서버 운영: Oracle Cloud VPS에 SSH로 접속해 Python 프로세스를 실행하고 Discord 알림으로 원격 상태 확인',
+  array['11가지 시장 조건 감지 및 매매 신호 점수화', '다중 조건 매매 전략 설계 및 반복 백테스트', 'ATR 기반 리스크 관리 (손절·익절·트레일링스탑)'],
+  '[
+    {"feature_index":0,"image_url":"/diagrams/trading-bot-flow.svg","caption":"거래소 API로 시세를 일괄 조회한 뒤 지표 계산, 11개 패턴 감지·스코어링, 다중 조건 판단, ATR 기반 리스크 관리를 거쳐 주문을 실행하고 Discord로 알리는 전체 흐름과, 재시작 시 거래소 잔고를 스캔해 로컬 상태를 자동 복구하는 구조를 정리한 다이어그램입니다."}
+  ]'::jsonb
 )
 on conflict (title) do update set
   period = excluded.period,
@@ -305,4 +339,5 @@ on conflict (title) do update set
   is_featured = excluded.is_featured,
   background = excluded.background,
   meaning = excluded.meaning,
-  highlights = excluded.highlights;
+  highlights = excluded.highlights,
+  feature_media = excluded.feature_media;

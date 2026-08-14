@@ -9,15 +9,14 @@ function isGithubLink(link: { label: string; url: string }) {
   return /github/i.test(link.label) || /github\.com/i.test(link.url)
 }
 
-// 프로젝트마다 다른 그라디언트 포인트를 주되, 전부 다크 네이비(--dark)로 수렴시켜 톤을 통일
-const CARD_GRADIENTS = [
-  'bg-gradient-to-br from-[#123a30] to-[#0b1220]',
-  'bg-gradient-to-br from-[#4a3218] to-[#0b1220]',
-  'bg-gradient-to-br from-[#12233d] to-[#0b1220]',
-]
+// 모든 카드 동일한 베이지 톤으로 통일
+const CARD_COLORS = ['bg-light', 'bg-light', 'bg-light']
 
-// 카드 그라디언트 톤과 맞춘 제목 색 (teal / copper / steel blue)
-const TITLE_COLORS = ['text-[#7fe0c7]', 'text-[#e8b978]', 'text-[#9dbee0]']
+// 카드 톤과 맞춘 제목 색 (teal / copper / steel blue, 밝은 배경에서도 읽히는 진한 톤)
+const TITLE_COLORS = ['text-accent-dim', 'text-[#b5691f]', 'text-[#3d6da3]']
+
+// 카드마다 프로젝트 구분만 살짝 주는 상단 액센트 바
+const ACCENT_BORDERS = ['border-t-accent-dim', 'border-t-[#b5691f]', 'border-t-[#3d6da3]']
 
 // 섹션(설명/기술/링크 등)을 고정 높이로 자르고, 넘칠 때만 "더보기"를 보여주는 공용 블록.
 // 모든 카드에서 같은 섹션이 같은 높이로 정렬되도록 하기 위함
@@ -46,7 +45,7 @@ function ClampBlock({ maxHeightPx, children }: { maxHeightPx: number; children: 
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-1.5 font-mono text-[0.72rem] text-muted-light transition-colors hover:text-accent"
+          className="mt-1.5 font-mono text-[0.72rem] text-muted transition-colors hover:text-accent"
         >
           {expanded ? '접기' : '더보기'}
         </button>
@@ -80,14 +79,24 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
         {visible.map((p, i) => (
           <div
             key={p.id}
-            className={`flex flex-col rounded-2xl border border-white/10 p-6 shadow-card-lg ${CARD_GRADIENTS[i % CARD_GRADIENTS.length]}`}
+            className={`flex flex-col rounded-2xl border border-border border-t-4 p-6 shadow-card-lg ${CARD_COLORS[i % CARD_COLORS.length]} ${ACCENT_BORDERS[i % ACCENT_BORDERS.length]}`}
           >
-            <h3 className={`mb-3 font-mono text-[1.3rem] font-bold ${TITLE_COLORS[i % TITLE_COLORS.length]}`}>
-              {p.title}
+            <h3
+              className={`mb-3 break-keep font-mono text-[1.55rem] font-extrabold tracking-tight ${TITLE_COLORS[i % TITLE_COLORS.length]}`}
+            >
+              {p.title === '클라우드 서버 기반 데이터 자동화 시스템' ? (
+                <>
+                  클라우드 서버 기반
+                  <br />
+                  데이터 자동화 시스템
+                </>
+              ) : (
+                p.title
+              )}
             </h3>
 
             {(p.period || p.team_size) && (
-              <div className="mb-3 border-b border-white/15 pb-3 font-mono text-[0.78rem] text-muted-light">
+              <div className="mb-3 border-b border-border pb-3 font-mono text-[0.78rem] text-muted">
                 {p.period}
                 {p.period && p.team_size && ' · '}
                 {p.team_size && `${p.team_size} 프로젝트`}
@@ -96,7 +105,7 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
 
             <div className="mb-3">
               <ClampBlock maxHeightPx={104}>
-                <p className="font-semibold text-light">{p.description}</p>
+                <p className="font-semibold text-dark">{p.description}</p>
               </ClampBlock>
             </div>
 
@@ -105,29 +114,12 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
                 <ClampBlock maxHeightPx={100}>
                   <ul className="flex flex-col gap-1">
                     {p.highlights.map((h, idx) => (
-                      <li key={idx} className="flex gap-2 text-[0.85rem] text-muted-light">
+                      <li key={idx} className="flex gap-2 text-[0.85rem] text-muted">
                         <span className="text-accent">•</span>
                         {h}
                       </li>
                     ))}
                   </ul>
-                </ClampBlock>
-              </div>
-            )}
-
-            {p.tech_stack.length > 0 && (
-              <div className="mb-3">
-                <ClampBlock maxHeightPx={28}>
-                  <div className="flex flex-wrap gap-1.5">
-                    {p.tech_stack.map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-md border border-white/20 bg-white/10 px-2.5 py-1 font-mono text-[0.75rem] text-accent"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
                 </ClampBlock>
               </div>
             )}

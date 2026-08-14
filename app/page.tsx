@@ -1,7 +1,6 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProjectList from '@/components/ProjectList'
-import SkillsList from '@/components/SkillsList'
 import GithubIcon from '@/components/icons/GithubIcon'
 import { UserIcon, CalendarIcon, MapPinIcon, PhoneIcon, MailIcon, CapIcon } from '@/components/icons/InfoIcons'
 import { supabase } from '@/lib/supabaseClient'
@@ -50,86 +49,55 @@ export default async function Home() {
     <>
       <Header />
 
-      <section
-        className="relative overflow-hidden bg-dark bg-cover bg-center pb-20 pt-24 text-light max-md:pb-14 max-md:pt-16"
-        style={profile?.hero_image_url ? { backgroundImage: `url(${profile.hero_image_url})` } : undefined}
-      >
-        {profile?.hero_image_url && (
-          <div className="absolute inset-0 bg-gradient-to-b from-dark/85 via-dark/85 to-dark" aria-hidden="true" />
-        )}
-        <div className="relative mx-auto max-w-[880px] px-6">
-          <div className="flex flex-col items-center gap-6 text-center">
-            <div className="max-w-[560px]">
-              <p className="mb-4 font-mono text-[0.85rem] tracking-[0.08em] text-accent">
-                PORTFOLIO / JUNIOR DEVELOPER
-              </p>
-              <h1 className="mb-6 font-display text-[clamp(2.6rem,6vw,4.2rem)] font-extrabold leading-[1.05] tracking-tight text-light">
-                시스템의 흐름을
-                <br />
-                설계하는 개발자
-                <br />
-                <span className="text-accent">최원민</span>
-              </h1>
-              <p className="mx-auto max-w-[46ch] text-[1.2rem] leading-[1.8] text-accent-soft/90">
-                문제의 원인을 파고들어
-                <br />
-                더 나은 구조로 해결합니다.
-              </p>
+      <section className="bg-white px-0 pb-10 pt-10 max-md:pb-8 max-md:pt-8" id="about">
+        <div className="mx-auto max-w-[880px] px-6">
+          <div className="mb-8 flex flex-col items-center gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-center">
+              {profile?.photo_url && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={profile.photo_url}
+                  alt="최원민 프로필 사진"
+                  className="h-28 w-28 flex-shrink-0 rounded-full border-2 border-accent object-cover"
+                />
+              )}
+              <div className="text-center sm:text-left">
+                <h1 className="mb-3 font-display text-[clamp(1.7rem,3.5vw,2.2rem)] font-extrabold leading-[1.15] tracking-tight text-dark">
+                  문제를 구조로
+                  <br />
+                  풀어가는 개발자
+                </h1>
+                <p className="max-w-[46ch] text-[0.95rem] leading-[1.6] text-muted">
+                  안녕하세요, AI 연동 웹 서비스와 시스템 구조 설계에 관심이 많고,
+                  <br />
+                  문제의 원인을 끝까지 파고드는 과정에 흥미를 느끼며,
+                  <br />
+                  배운 만큼 꾸준히 성장하는 개발자입니다.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-row gap-4 sm:flex-shrink-0 sm:flex-col sm:justify-center">
+              <a
+                href="mailto:jo08198@gmail.com"
+                className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[#d98e4c]/50 px-6 py-3 font-mono text-[0.85rem] font-semibold text-[#d98e4c] transition-colors hover:bg-[#d98e4c] hover:text-white"
+              >
+                이메일 보내기
+                <span aria-hidden="true">↗</span>
+              </a>
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[#6f93c4]/50 px-6 py-3 font-mono text-[0.85rem] font-semibold text-[#6f93c4] transition-colors hover:bg-[#6f93c4] hover:text-white"
+              >
+                <GithubIcon className="h-[15px] w-[15px]" />
+                GitHub 보기
+              </a>
             </div>
           </div>
 
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a
-              href="#projects"
-              className="flex h-[150px] w-[150px] flex-shrink-0 flex-col items-center justify-center rounded-full border border-white/25 text-center font-mono text-[0.85rem] font-semibold text-accent transition-colors hover:border-accent max-md:h-[120px] max-md:w-[120px]"
-            >
-              프로젝트
-              <br />
-              보기
-              <span aria-hidden="true" className="mt-1 text-lg">
-                ↓
-              </span>
-            </a>
-            <a
-              href="mailto:jo08198@gmail.com"
-              className="flex h-[150px] w-[150px] flex-shrink-0 flex-col items-center justify-center rounded-full border border-white/25 text-center font-mono text-[0.85rem] font-semibold text-[#d98e4c] transition-colors hover:border-[#d98e4c] max-md:h-[120px] max-md:w-[120px]"
-            >
-              이메일
-              <br />
-              보내기
-              <span aria-hidden="true" className="mt-1 text-lg">
-                ↗
-              </span>
-            </a>
-            <a
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-[150px] w-[150px] flex-shrink-0 flex-col items-center justify-center rounded-full border border-white/25 text-center font-mono text-[0.85rem] font-semibold text-[#6f93c4] transition-colors hover:border-[#6f93c4] max-md:h-[120px] max-md:w-[120px]"
-            >
-              GitHub
-              <br />
-              보기
-              <GithubIcon className="mt-1 h-[18px] w-[18px]" />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white px-0 py-[72px] max-md:py-[52px]" id="about">
-        <div className="mx-auto max-w-[880px] px-6">
-          <SectionHead title="자기소개" />
-
-          <div className="mb-6 flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-            {profile?.photo_url && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={profile.photo_url}
-                alt="최원민 프로필 사진"
-                className="h-28 w-28 flex-shrink-0 rounded-full border-2 border-accent object-cover"
-              />
-            )}
-            <dl className="grid flex-1 grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2">
+          <div className="mb-4 border-t border-border pt-8">
+            <dl className="grid grid-cols-1 gap-x-10 gap-y-3 sm:grid-cols-2">
               {infoRows.map(({ Icon, label, value }) => (
                 <div key={label} className="flex items-center gap-3">
                   <Icon className="h-[18px] w-[18px] flex-shrink-0 text-accent" />
@@ -141,13 +109,13 @@ export default async function Home() {
           </div>
 
           {resumeItems.length > 0 ? (
-            <div className="flex flex-col gap-3 rounded-2xl border border-border bg-neutral-50 p-5">
+            <div className="flex flex-col gap-2 rounded-2xl bg-neutral-50 p-4">
               {resumeItems.map((r, idx) => {
                 const c = resumeCategoryColor(r.category, idx)
                 return (
                   <div
                     key={idx}
-                    className="flex flex-wrap items-baseline gap-4 rounded-lg bg-white px-4 py-3 shadow-sm"
+                    className="flex flex-wrap items-baseline gap-4 rounded-lg bg-white px-4 py-2.5 shadow-sm"
                   >
                     <span
                       className={`inline-flex flex-shrink-0 items-center gap-1.5 rounded-md border px-2.5 py-1 font-mono text-xs font-medium ${c.tag}`}
@@ -164,22 +132,17 @@ export default async function Home() {
           ) : (
             <p className="font-mono text-sm text-muted">아직 등록된 이력이 없습니다.</p>
           )}
-
-          <h3 className="mb-4 mt-10 font-mono text-[0.85rem] font-semibold tracking-wide text-muted">
-            기술 스택
-          </h3>
-          <SkillsList categories={skillCategories} />
         </div>
       </section>
 
-      <section className="bg-light px-0 py-[72px] max-md:py-[52px]" id="projects">
+      <section className="border-t border-black/10 bg-[#d7ede5] px-0 py-[72px] max-md:py-[52px]" id="projects">
         <div className="mx-auto max-w-[880px] px-6">
           <SectionHead title="프로젝트" />
           <ProjectList projects={projects} />
         </div>
       </section>
 
-      <Footer phone={profile?.phone} />
+      <Footer phone={profile?.phone} skillCategories={skillCategories} />
     </>
   )
 }

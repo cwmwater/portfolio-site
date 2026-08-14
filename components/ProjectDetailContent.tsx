@@ -14,6 +14,39 @@ function isGithubLink(link: { label: string; url: string }) {
   return /github/i.test(link.label) || /github\.com/i.test(link.url)
 }
 
+// "- 소주제: 설명" 형태의 줄바꿈 텍스트면 불릿 리스트로, 아니면 일반 문단으로 렌더링
+function BulletOrParagraph({ text }: { text: string }) {
+  if (!text.includes('\n- ') && !text.startsWith('- ')) {
+    return <p className="max-w-[84ch] text-neutral-700">{text}</p>
+  }
+
+  const lines = text
+    .split('\n')
+    .map((line) => line.replace(/^- /, '').trim())
+    .filter(Boolean)
+
+  return (
+    <ul className="flex max-w-[84ch] flex-col gap-2">
+      {lines.map((line, idx) => {
+        const colonIdx = line.indexOf(': ')
+        return (
+          <li key={idx} className="flex list-none gap-2 text-neutral-700">
+            <span className="flex-shrink-0 text-accent">•</span>
+            {colonIdx === -1 ? (
+              <span>{line}</span>
+            ) : (
+              <span>
+                <span className="font-semibold text-dark">{line.slice(0, colonIdx)}</span>
+                {line.slice(colonIdx)}
+              </span>
+            )}
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
 export default function ProjectDetailContent({ project: p }: { project: Project }) {
   // 이미지는 관련 기능 항목 옆 아이콘으로 붙여서 보여주므로, 상단 갤러리는 영상만 노출
   const media = (p.media ?? []).filter((m) => m.type !== 'image')
@@ -57,20 +90,14 @@ export default function ProjectDetailContent({ project: p }: { project: Project 
                 <td className="border-b border-border px-3.5 py-2.5 text-dark">{p.team_size}</td>
               </tr>
             )}
-            {p.main_duty && (
-              <tr>
-                <th className="w-[110px] border-b border-border bg-neutral-50 px-3.5 py-2.5 text-left font-semibold text-muted">
-                  주요 업무
-                </th>
-                <td className="border-b border-border px-3.5 py-2.5 text-dark">{p.main_duty}</td>
-              </tr>
-            )}
             {p.role && (
               <tr>
                 <th className="w-[110px] border-b border-border bg-neutral-50 px-3.5 py-2.5 text-left font-semibold text-muted">
                   역할
                 </th>
-                <td className="border-b border-border px-3.5 py-2.5 text-dark">{p.role}</td>
+                <td className="border-b border-border px-3.5 py-2.5 text-dark">
+                  <BulletOrParagraph text={p.role} />
+                </td>
               </tr>
             )}
             {p.tech_stack.length > 0 && (
@@ -144,7 +171,7 @@ export default function ProjectDetailContent({ project: p }: { project: Project 
             <BackgroundIcon className="text-accent" />
             왜 만들었는지
           </h2>
-          <p className="max-w-[84ch] text-neutral-700">{p.background}</p>
+          <BulletOrParagraph text={p.background} />
         </section>
       )}
 
@@ -154,7 +181,7 @@ export default function ProjectDetailContent({ project: p }: { project: Project 
             <MeaningIcon className="text-accent" />
             무엇을 배웠는지
           </h2>
-          <p className="max-w-[84ch] text-neutral-700">{p.meaning}</p>
+          <BulletOrParagraph text={p.meaning} />
         </section>
       )}
 
@@ -220,6 +247,8 @@ export default function ProjectDetailContent({ project: p }: { project: Project 
                 <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
                   <dt className="font-mono text-muted">문제</dt>
                   <dd className="text-neutral-700">{t.problem}</dd>
+                  <dt className="font-mono text-muted">원인</dt>
+                  <dd className="text-neutral-700">{t.cause}</dd>
                   <dt className="font-mono text-muted">해결</dt>
                   <dd className="text-neutral-700">{t.solution}</dd>
                 </dl>

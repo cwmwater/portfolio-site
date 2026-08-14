@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" font-family="'Pretendard', -apple-system, sans-serif">
+  <defs>
+    <marker id="arrowN1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#8fa3c4" />
+    </marker>
+    <marker id="arrowN2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1fbf9b" />
+    </marker>
+    <marker id="arrowN3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#d98e4c" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="520" fill="#0b1220" />
+  <text x="40" y="40" fill="#f6f4ef" font-size="20" font-weight="700">마케튼 nginx 리버스 프록시 — 라우팅과 무중단 인증서 갱신</text>
+
+  <!-- 브라우저 -->
+  <rect x="40" y="130" width="150" height="90" rx="14" fill="#1a1a1a" stroke="#8a8a8a" stroke-width="1.5" />
+  <text x="115" y="172" fill="#e5e5e5" font-size="13" font-weight="700" text-anchor="middle">브라우저</text>
+  <text x="115" y="192" fill="#c7c7c7" font-size="10" text-anchor="middle">marketten.site</text>
+
+  <line x1="190" y1="175" x2="248" y2="175" stroke="#8fa3c4" stroke-width="2" marker-end="url(#arrowN1)" />
+  <text x="219" y="163" fill="#8fa3c4" font-size="10" text-anchor="middle">HTTP</text>
+
+  <!-- nginx -->
+  <rect x="250" y="130" width="230" height="90" rx="14" fill="#1f2937" stroke="#64748b" stroke-width="1.5" />
+  <image href="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDA5NjM5IiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+TkdJTlg8L3RpdGxlPjxwYXRoIGQ9Ik0xMiAwTDEuNjA1IDZ2MTJMMTIgMjRsMTAuMzk1LTZWNkwxMiAwem02IDE2LjU5YzAgLjcwNS0uNjQ2IDEuMjktMS41MjkgMS4yOS0uNjMxIDAtMS4zNTEtLjI1NS0xLjgwMS0uODFsLTYtNy4xNDF2Ni42NmMwIC43MjEtLjU3IDEuMjktMS4yNzQgMS4yOUg3LjMyYy0uNzIxIDAtMS4yOS0uNi0xLjI5LTEuMjlWNy40MWMwLS43MDUuNjMtMS4yOSAxLjUtMS4yOS42NDYgMCAxLjM4LjI1NSAxLjgzLjgxbDUuOTcgNy4xNDFWNy40MWMwLS43MjEuNi0xLjI5IDEuMjktMS4yOWguMDc1Yy43MiAwIDEuMjkuNiAxLjI5IDEuMjl2OS4xOEgxOHoiLz48L3N2Zz4=" x="352" y="146" width="26" height="26" />
+  <text x="365" y="192" fill="#f6f4ef" font-size="14" font-weight="700" text-anchor="middle">nginx</text>
+  <text x="365" y="210" fill="#9aa4b5" font-size="10" text-anchor="middle">리버스 프록시</text>
+
+  <text x="365" y="128" fill="#e8b978" font-size="10" text-anchor="middle">HTTP → HTTPS 자동 전환</text>
+
+  <!-- Spring Boot / React -->
+  <rect x="620" y="80" width="230" height="80" rx="14" fill="#123a30" stroke="#1fbf9b" stroke-width="1.5" />
+  <text x="735" y="115" fill="#7fe0c7" font-size="14" font-weight="700" text-anchor="middle">Spring Boot</text>
+  <text x="735" y="135" fill="#cdeee3" font-size="10" text-anchor="middle">포트 비공개, 내부망 전용</text>
+
+  <rect x="620" y="200" width="230" height="80" rx="14" fill="#12233d" stroke="#6f93c4" stroke-width="1.5" />
+  <text x="735" y="235" fill="#9dbee0" font-size="14" font-weight="700" text-anchor="middle">React</text>
+  <text x="735" y="255" fill="#c9d6e8" font-size="10" text-anchor="middle">포트 비공개, 내부망 전용</text>
+
+  <line x1="480" y1="160" x2="605" y2="120" stroke="#1fbf9b" stroke-width="2" marker-end="url(#arrowN2)" />
+  <text x="545" y="128" fill="#9aa4b5" font-size="10" text-anchor="middle">/api, /oauth2 등</text>
+  <line x1="480" y1="190" x2="605" y2="235" stroke="#6f93c4" stroke-width="2" marker-end="url(#arrowN2)" />
+  <text x="545" y="248" fill="#9aa4b5" font-size="10" text-anchor="middle">그 외 요청</text>
+
+  <!-- 인증서 갱신 (cron) -->
+  <rect x="150" y="340" width="900" height="150" rx="16" fill="#0f1729" stroke="#d98e4c" stroke-width="1.5" />
+  <text x="172" y="368" fill="#e8b978" font-size="13" font-weight="700">서버 예약 작업 (cron) — 무중단 인증서 갱신</text>
+
+  <rect x="185" y="390" width="220" height="70" rx="12" fill="#1f1608" stroke="#d98e4c" stroke-width="1.5" />
+  <text x="295" y="420" fill="#e8b978" font-size="12" font-weight="700" text-anchor="middle">매일 자동 실행</text>
+  <text x="295" y="440" fill="#f0d9b8" font-size="10" text-anchor="middle">인증서 갱신 필요 여부 확인</text>
+
+  <line x1="405" y1="425" x2="460" y2="425" stroke="#d98e4c" stroke-width="2" marker-end="url(#arrowN3)" />
+
+  <rect x="465" y="390" width="220" height="70" rx="12" fill="#1f1608" stroke="#d98e4c" stroke-width="1.5" />
+  <text x="575" y="420" fill="#e8b978" font-size="12" font-weight="700" text-anchor="middle">갱신되면 발급</text>
+  <text x="575" y="440" fill="#f0d9b8" font-size="10" text-anchor="middle">새 인증서로 교체</text>
+
+  <line x1="685" y1="425" x2="740" y2="425" stroke="#d98e4c" stroke-width="2" marker-end="url(#arrowN3)" />
+
+  <rect x="745" y="390" width="270" height="70" rx="12" fill="#1f1608" stroke="#d98e4c" stroke-width="1.5" />
+  <text x="880" y="415" fill="#e8b978" font-size="12" font-weight="700" text-anchor="middle">nginx -s reload</text>
+  <text x="880" y="433" fill="#f0d9b8" font-size="10" text-anchor="middle">재시작이 아닌 설정만 다시 읽음</text>
+  <text x="880" y="449" fill="#f0d9b8" font-size="10" text-anchor="middle">— 기존 연결 끊지 않고 반영</text>
+
+  <line x1="880" y1="390" x2="880" y2="300" stroke="#d98e4c" stroke-width="2" stroke-dasharray="4 3" />
+  <line x1="880" y1="300" x2="365" y2="300" stroke="#d98e4c" stroke-width="2" stroke-dasharray="4 3" />
+  <line x1="365" y1="300" x2="365" y2="222" stroke="#d98e4c" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrowN3)" />
+  <text x="622" y="292" fill="#d98e4c" font-size="10" text-anchor="middle">reload로 nginx에 새 인증서 반영</text>
+</svg>

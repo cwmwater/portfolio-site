@@ -19,6 +19,7 @@ export interface ProjectLink {
 export interface ProjectTroubleshootingItem {
   title: string
   problem: string
+  cause: string
   solution: string
 }
 
@@ -38,7 +39,6 @@ export interface Project {
   meaning: string | null
   tech_stack: string[]
   team_size: string | null
-  main_duty: string | null
   role: string | null
   features: string[]
   feature_media: ProjectFeatureMedia[]

@@ -97,22 +97,19 @@ export default function AdminPage() {
   const [uploadingHeroImage, setUploadingHeroImage] = useState(false)
 
   // 프로젝트 상세(개요/구현기능/트러블슈팅) 편집 상태
-  const [overviewDraft, setOverviewDraft] = useState<
-    Record<string, { team_size: string; main_duty: string; role: string }>
-  >({})
+  const [overviewDraft, setOverviewDraft] = useState<Record<string, { team_size: string; role: string }>>({})
   const [featureInput, setFeatureInput] = useState<Record<string, string>>({})
   const [editingFeature, setEditingFeature] = useState<{ id: string; index: number } | null>(null)
   const [editingFeatureText, setEditingFeatureText] = useState('')
-  const [tsDraft, setTsDraft] = useState<Record<string, { title: string; problem: string; solution: string }>>(
-    {}
-  )
+  const [tsDraft, setTsDraft] = useState<
+    Record<string, { title: string; problem: string; cause: string; solution: string }>
+  >({})
   const [ytInput, setYtInput] = useState<Record<string, string>>({})
 
   // 새 프로젝트 입력 폼 상태
   const [title, setTitle] = useState('')
   const [period, setPeriod] = useState('')
   const [teamSize, setTeamSize] = useState('')
-  const [mainDuty, setMainDuty] = useState('')
   const [role, setRole] = useState('')
   const [description, setDescription] = useState('')
   const [techStackInput, setTechStackInput] = useState('')
@@ -370,7 +367,6 @@ export default function AdminPage() {
       .from('projects')
       .update({
         team_size: draft?.team_size.trim() || null,
-        main_duty: draft?.main_duty.trim() || null,
         role: draft?.role.trim() || null,
       })
       .eq('id', id)
@@ -437,19 +433,24 @@ export default function AdminPage() {
 
   async function handleAddTroubleshooting(id: string) {
     const draft = tsDraft[id]
-    if (!draft?.title.trim() || !draft?.problem.trim() || !draft?.solution.trim()) return
+    if (!draft?.title.trim() || !draft?.problem.trim() || !draft?.cause.trim() || !draft?.solution.trim()) return
     const target = projects.find((p) => p.id === id)
     if (!target) return
     const nextTs = [
       ...target.troubleshooting,
-      { title: draft.title.trim(), problem: draft.problem.trim(), solution: draft.solution.trim() },
+      {
+        title: draft.title.trim(),
+        problem: draft.problem.trim(),
+        cause: draft.cause.trim(),
+        solution: draft.solution.trim(),
+      },
     ]
     const { error } = await supabase.from('projects').update({ troubleshooting: nextTs }).eq('id', id)
     if (error) {
       alert('추가 실패: ' + error.message)
       return
     }
-    setTsDraft((d) => ({ ...d, [id]: { title: '', problem: '', solution: '' } }))
+    setTsDraft((d) => ({ ...d, [id]: { title: '', problem: '', cause: '', solution: '' } }))
     loadProjects()
   }
 
@@ -538,7 +539,6 @@ export default function AdminPage() {
       title: title.trim(),
       period: period.trim() || null,
       team_size: teamSize.trim() || null,
-      main_duty: mainDuty.trim() || null,
       role: role.trim() || null,
       description: description.trim(),
       tech_stack: techStack,
@@ -557,7 +557,6 @@ export default function AdminPage() {
     setTitle('')
     setPeriod('')
     setTeamSize('')
-    setMainDuty('')
     setRole('')
     setDescription('')
     setTechStackInput('')
@@ -894,11 +893,6 @@ export default function AdminPage() {
             onChange={(e) => setTeamSize(e.target.value)}
           />
           <input
-            placeholder="주요 업무 (예: 백엔드 담당)"
-            value={mainDuty}
-            onChange={(e) => setMainDuty(e.target.value)}
-          />
-          <input
             placeholder="담당 역할"
             value={role}
             onChange={(e) => setRole(e.target.value)}
@@ -994,7 +988,7 @@ export default function AdminPage() {
               </label>
               <p className="mt-1 text-[0.9rem]">{p.description}</p>
 
-              <div className="admin-resume-item grid-cols-[1fr_1fr_1fr_auto]">
+              <div className="admin-resume-item grid-cols-[1fr_1fr_auto]">
                 <input
                   placeholder="인원 (예: 6명)"
                   value={overviewDraft[p.id]?.team_size ?? p.team_size ?? ''}
@@ -1003,21 +997,6 @@ export default function AdminPage() {
                       ...d,
                       [p.id]: {
                         team_size: e.target.value,
-                        main_duty: d[p.id]?.main_duty ?? p.main_duty ?? '',
-                        role: d[p.id]?.role ?? p.role ?? '',
-                      },
-                    }))
-                  }
-                />
-                <input
-                  placeholder="주요 업무"
-                  value={overviewDraft[p.id]?.main_duty ?? p.main_duty ?? ''}
-                  onChange={(e) =>
-                    setOverviewDraft((d) => ({
-                      ...d,
-                      [p.id]: {
-                        team_size: d[p.id]?.team_size ?? p.team_size ?? '',
-                        main_duty: e.target.value,
                         role: d[p.id]?.role ?? p.role ?? '',
                       },
                     }))
@@ -1031,7 +1010,6 @@ export default function AdminPage() {
                       ...d,
                       [p.id]: {
                         team_size: d[p.id]?.team_size ?? p.team_size ?? '',
-                        main_duty: d[p.id]?.main_duty ?? p.main_duty ?? '',
                         role: e.target.value,
                       },
                     }))
@@ -1138,6 +1116,7 @@ export default function AdminPage() {
                       [p.id]: {
                         title: e.target.value,
                         problem: d[p.id]?.problem ?? '',
+                        cause: d[p.id]?.cause ?? '',
                         solution: d[p.id]?.solution ?? '',
                       },
                     }))
@@ -1152,6 +1131,22 @@ export default function AdminPage() {
                       [p.id]: {
                         title: d[p.id]?.title ?? '',
                         problem: e.target.value,
+                        cause: d[p.id]?.cause ?? '',
+                        solution: d[p.id]?.solution ?? '',
+                      },
+                    }))
+                  }
+                />
+                <input
+                  placeholder="원인"
+                  value={tsDraft[p.id]?.cause ?? ''}
+                  onChange={(e) =>
+                    setTsDraft((d) => ({
+                      ...d,
+                      [p.id]: {
+                        title: d[p.id]?.title ?? '',
+                        problem: d[p.id]?.problem ?? '',
+                        cause: e.target.value,
                         solution: d[p.id]?.solution ?? '',
                       },
                     }))
@@ -1166,6 +1161,7 @@ export default function AdminPage() {
                       [p.id]: {
                         title: d[p.id]?.title ?? '',
                         problem: d[p.id]?.problem ?? '',
+                        cause: d[p.id]?.cause ?? '',
                         solution: e.target.value,
                       },
                     }))
