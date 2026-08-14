@@ -188,7 +188,7 @@ values (
   '상품 정보만 입력하면 단계별로 마케팅 블로그 글을 생성해주는 웹 서비스',
   array['Spring Boot', 'JPA', 'MySQL', 'Redis', 'React', 'FastAPI', 'JWT', 'OAuth2', 'Docker', 'CI/CD', 'OCI', 'RAG'],
   1,
-  '[{"url":"https://youtu.be/c47sxZk141s","type":"youtube"}]'::jsonb,
+  '[]'::jsonb,
   '[{"url":"https://github.com/cwmwater/Marketten","label":"Marketten"},{"url":"https://github.com/cwmwater/Marketten-React","label":"Marketten-React"},{"url":"https://github.com/cwmwater/mkt-module","label":"mkt-module"},{"url":"https://marketten.site","label":"marketten.site (배포)"}]'::jsonb,
   '6명',
   'GitHub 저장소 관리자 · 글 생성 플로우 · 소셜로그인 · FastAPI 연동 · 인프라(Docker/CI-CD/RAG/nginx) 담당',
