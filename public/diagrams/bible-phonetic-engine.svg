@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 480" font-family="'Pretendard', -apple-system, sans-serif">
+  <defs>
+    <marker id="bpeArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#8fa3c4" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1500" height="480" fill="#0b1220" />
+  <text x="40" y="40" fill="#f6f4ef" font-size="20" font-weight="700">성씨+이름 어감 채점 — 규칙 엔진과 AI의 역할 분리</text>
+
+  <!-- 1. AI 이름 생성 -->
+  <rect x="50" y="100" width="260" height="100" rx="10" fill="#101a2c" stroke="#e8b978" stroke-width="2" />
+  <text x="180" y="138" fill="#f6f4ef" font-size="15" font-weight="700" text-anchor="middle">이름 생성 AI</text>
+  <text x="180" y="158" fill="#e8b978" font-size="11" text-anchor="middle">프롬프트 지침:</text>
+  <text x="180" y="176" fill="#e8b978" font-size="11" text-anchor="middle">"흔한 단어처럼 들리지 않게"</text>
+
+  <line x1="310" y1="150" x2="380" y2="150" stroke="#8fa3c4" stroke-width="2" marker-end="url(#bpeArrow)" />
+  <text x="345" y="133" fill="#cdd7ea" font-size="11" text-anchor="middle">후보</text>
+
+  <!-- ===== 발음 채점 엔진 (규칙 기반) 내부 처리 ===== -->
+  <rect x="380" y="70" width="900" height="220" rx="12" fill="none" stroke="#1fbf9b" stroke-width="1" stroke-dasharray="4 3" />
+  <text x="396" y="92" fill="#7fe0c7" font-size="12" font-weight="700">발음 채점 엔진 — 규칙 기반, 순서대로 진행</text>
+
+  <rect x="400" y="115" width="200" height="90" rx="8" fill="#101a2c" stroke="#9dbee0" stroke-width="2" />
+  <text x="500" y="150" fill="#f6f4ef" font-size="13" font-weight="700" text-anchor="middle">초성·중성·종성</text>
+  <text x="500" y="168" fill="#8fa3c4" font-size="11" text-anchor="middle">분해</text>
+
+  <line x1="600" y1="160" x2="640" y2="160" stroke="#8fa3c4" stroke-width="2" marker-end="url(#bpeArrow)" />
+
+  <rect x="640" y="115" width="280" height="90" rx="8" fill="#101a2c" stroke="#9dbee0" stroke-width="2" />
+  <text x="780" y="145" fill="#f6f4ef" font-size="13" font-weight="700" text-anchor="middle">규칙 체크 4가지</text>
+  <text x="780" y="164" fill="#8fa3c4" font-size="10" text-anchor="middle">음절 수 · 성씨-이름 연결 · 받침 리듬</text>
+  <text x="780" y="180" fill="#8fa3c4" font-size="10" text-anchor="middle">자음 반복</text>
+
+  <line x1="920" y1="160" x2="960" y2="160" stroke="#8fa3c4" stroke-width="2" marker-end="url(#bpeArrow)" />
+
+  <rect x="960" y="115" width="290" height="90" rx="8" fill="#101a2c" stroke="#9dbee0" stroke-width="2" />
+  <text x="1105" y="150" fill="#f6f4ef" font-size="13" font-weight="700" text-anchor="middle">점수 산출 (0~100)</text>
+  <text x="1105" y="168" fill="#8fa3c4" font-size="11" text-anchor="middle">감점 사유를 그대로 기록</text>
+
+  <line x1="1280" y1="150" x2="1340" y2="150" stroke="#8fa3c4" stroke-width="2" marker-end="url(#bpeArrow)" />
+
+  <!-- 최종: 정렬 -->
+  <rect x="1340" y="105" width="120" height="90" rx="10" fill="#123a30" stroke="#7fe0c7" stroke-width="2" />
+  <text x="1400" y="140" fill="#7fe0c7" font-size="13" font-weight="700" text-anchor="middle">점수로</text>
+  <text x="1400" y="158" fill="#7fe0c7" font-size="13" font-weight="700" text-anchor="middle">정렬</text>
+  <text x="1400" y="178" fill="#cdeee3" font-size="9" text-anchor="middle">새 이름 생성 없음</text>
+
+  <!-- 하단 역할 분리 note -->
+  <rect x="150" y="340" width="1200" height="80" rx="14" fill="#0f1729" stroke="#475569" stroke-width="1.5" />
+  <text x="175" y="372" fill="#f6f4ef" font-size="13" font-weight="700">규칙과 AI는 서로 다른 역할을 맡음</text>
+  <text x="175" y="396" fill="#9dbee0" font-size="12">규칙 엔진 — 이미 생성된 이름을 채점·정렬만 함 (새 이름을 만들지 않음) · AI 프롬프트 — 생성 시점에 지침으로 반영 (채점하지 않음)</text>
+</svg>

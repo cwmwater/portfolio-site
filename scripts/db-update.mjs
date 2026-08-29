@@ -67,12 +67,22 @@ async function main() {
     for (const entry of payload.projects) {
       const { matchTitle, ...fields } = entry
       const title = matchTitle ?? fields.title
-      const { error } = await supabase.from('projects').update(fields).eq('title', title)
+      const { data, error } = await supabase.from('projects').update(fields).eq('title', title).select('id')
       if (error) {
         console.error(`✗ projects 업데이트 실패 (${title}):`, error.message)
         process.exit(1)
       }
-      console.log(`✔ projects 업데이트 완료: ${title}`)
+      if (data.length === 0) {
+        // 매칭되는 title이 없으면 새 프로젝트로 삽입 (matchTitle로 이름 변경하려던 게 아니라 신규 추가인 경우)
+        const { error: insertError } = await supabase.from('projects').insert({ title, ...fields })
+        if (insertError) {
+          console.error(`✗ projects 신규 추가 실패 (${title}):`, insertError.message)
+          process.exit(1)
+        }
+        console.log(`✔ projects 신규 추가 완료: ${title}`)
+      } else {
+        console.log(`✔ projects 업데이트 완료: ${title}`)
+      }
     }
   }
 

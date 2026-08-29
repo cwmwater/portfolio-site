@@ -112,13 +112,17 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
             {p.highlights.length > 0 && (
               <div className="mb-3">
                 <ClampBlock maxHeightPx={100}>
-                  <ul className="flex flex-col gap-1">
-                    {p.highlights.map((h, idx) => (
-                      <li key={idx} className="flex gap-2 text-[0.85rem] text-muted">
-                        <span className="text-accent">•</span>
-                        {h}
-                      </li>
-                    ))}
+                  <ul className="flex flex-col gap-1.5">
+                    {p.highlights.map((h, idx) => {
+                      const sepIdx = h.indexOf(' — ')
+                      const title = sepIdx === -1 ? h : h.slice(0, sepIdx)
+                      return (
+                        <li key={idx} className="flex gap-2 text-[0.85rem]">
+                          <span className="flex-shrink-0 text-accent">•</span>
+                          <span className="font-semibold text-dark">{title}</span>
+                        </li>
+                      )
+                    })}
                   </ul>
                 </ClampBlock>
               </div>

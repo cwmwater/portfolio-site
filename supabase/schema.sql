@@ -163,7 +163,7 @@ values (
   'https://pansfwryctxokvmssywb.supabase.co/storage/v1/object/public/portfolio-images/hero/1785917777642.jpg',
   'React, Spring, FastAPI를 연동한 3계층 아키텍처를 직접 설계하고 구현한 풀스택 개발자입니다. 단순히 기능을 구현하는 데 그치지 않고, 서비스 전체 데이터 흐름을 이해하고 설계하는 것을 중요하게 생각합니다. 마케튼(Marketten) 프로젝트에서 GitHub 저장소 관리자로 6인 팀의 브랜치 통합을 총괄하며 AI 서비스 통합, OAuth2 기반 소셜 로그인 구축, 3계층 통신 구조 설계를 직접 경험했습니다. 또한 게임 AI 프로젝트에서는 데이터 설계부터 LSTM 모델 학습, Unity 엔진 통합까지 전체 파이프라인을 직접 구현하며 복잡한 시스템 간 연동 능력을 키웠습니다. Spring 백엔드를 중심으로 전문성을 발전시키면서, 프론트엔드와 AI 서비스까지 아우르는 풀스택 개발자로 성장하고 있습니다.',
   null,
-  '[{"primary":["Java","Python","JavaScript","C#"],"category":"Language","learning":[]},{"primary":["Spring / Spring Boot","JPA","FastAPI"],"category":"Backend","learning":[]},{"primary":["React"],"category":"Frontend","learning":[]},{"primary":["PyTorch","Pandas","RAG"],"category":"Data / AI","learning":[]},{"primary":["MySQL","Redis","Git","Docker","Oracle Cloud","Linux","AWS"],"category":"Infra","learning":[]},{"primary":["Unity"],"category":"Game","learning":[]}]'::jsonb,
+  '[{"primary":["Java","Python","JavaScript","C#"],"category":"Language","learning":[]},{"primary":["Spring / Spring Boot","JPA","FastAPI","NestJS","Prisma","OAuth2"],"category":"Backend","learning":[]},{"primary":["React"],"category":"Frontend","learning":[]},{"primary":["PyTorch","Pandas","RAG"],"category":"Data / AI","learning":[]},{"primary":["MySQL","PostgreSQL","Redis","Git","Docker","CI/CD","Oracle Cloud","Linux","AWS"],"category":"Infra","learning":[]},{"primary":["Unity"],"category":"Game","learning":[]}]'::jsonb,
   '[{"title":"중부대학교 게임소프트웨어학과 학사","period":"2020.03~2026.02","category":"학력"},{"title":"정보처리기사","period":"2026.06","category":"자격증"},{"title":"H 아카데미 · 인공지능 트랜스포메이션을 위한 플랫폼 개발자 양성과정 수료","period":"2025.04~2025.10","category":"수료"}]'::jsonb,
   '2001.03.22',
   '경기도 고양시 덕양구'
@@ -187,7 +187,7 @@ values (
   '2025.10 – 진행 중',
   '상품 정보만 입력하면 단계별로 마케팅 블로그 글을 생성해주는 웹 서비스',
   array['Spring Boot', 'JPA', 'MySQL', 'Redis', 'React', 'FastAPI', 'JWT', 'OAuth2', 'Docker', 'CI/CD', 'OCI', 'RAG'],
-  1,
+  2,
   '[]'::jsonb,
   '[{"url":"https://github.com/cwmwater/Marketten","label":"Marketten"},{"url":"https://github.com/cwmwater/Marketten-React","label":"Marketten-React"},{"url":"https://github.com/cwmwater/mkt-module","label":"mkt-module"},{"url":"https://marketten.site","label":"marketten.site (배포)"}]'::jsonb,
   '6명',
@@ -245,7 +245,7 @@ values (
   '2025.08 – 2025.12',
   '게임 상태를 바탕으로 몬스터 행동을 결정하고, 퍼지 AI의 행동 데이터를 LSTM으로 학습해 Unity에서 실시간 추론하는 몬스터 AI 시스템',
   array['Python', 'PyTorch', 'C#', 'Unity', 'ONNX'],
-  2,
+  4,
   '[]'::jsonb,
   '[{"url":"https://github.com/cwmwater/monster-ai-behavior","label":"monster-ai-behavior"},{"url":"https://github.com/cwmwater/monster-ai-unity","label":"monster-ai-unity"}]'::jsonb,
   '3명',
@@ -301,7 +301,7 @@ values (
   array['Python', 'Oracle Cloud', 'Linux', 'Discord Webhook', 'REST API'],
   3,
   '[]'::jsonb,
-  '[{"url":"https://github.com/cwmwater/btc-cloud-trader","label":"btc-cloud-trader (private)"}]'::jsonb,
+  '[]'::jsonb,
   '1명',
   '전략 설계 · 자동화 스크립트 운영 · Discord 모니터링, 1인 진행',
   '- Python 자동매매 로직 설계 및 구현
@@ -333,6 +333,56 @@ on conflict (title) do update set
   links = excluded.links,
   team_size = excluded.team_size,
   main_duty = excluded.main_duty,
+  role = excluded.role,
+  features = excluded.features,
+  troubleshooting = excluded.troubleshooting,
+  is_featured = excluded.is_featured,
+  background = excluded.background,
+  meaning = excluded.meaning,
+  highlights = excluded.highlights,
+  feature_media = excluded.feature_media;
+
+insert into projects (
+  title, period, description, tech_stack, sort_order, media, links,
+  team_size, role, features, troubleshooting, is_featured, background, meaning, highlights, feature_media
+)
+values (
+  '말씀결 (Bible Name Lab)',
+  '2026.08 – 진행 중',
+  '원하는 신앙적 의미를 문장으로 입력하면 성경 근거와 함께 이름을 추천하고, 반대로 이름의 성경적 연관성도 검증해주는 웹 서비스',
+  array['React', 'NestJS', 'FastAPI', 'Prisma', 'PostgreSQL', 'Redis', 'Docker', 'CI/CD', 'OAuth2', 'RAG'],
+  1,
+  '[]'::jsonb,
+  '[{"url":"https://biblenamelab.com","label":"biblenamelab.com (배포)"}]'::jsonb,
+  '1명',
+  '- React·NestJS·FastAPI 세 개 프로그램을 직접 설계하고 개발
+- 성경 데이터를 체계적으로 정리하고, 이름을 만들어주는 AI 처리 과정 설계
+- 이름의 성경적 근거를 확인하는 기능과 발음이 자연스러운지 평가하는 기능 구현
+- Docker·GitHub Actions로 자동 배포 환경 구성 및 서버 운영 설정
+- Google·Naver·Kakao 소셜 로그인 구현',
+  array['근거 등급을 매기는 이름 생성 파이프라인 — 사용자가 입력한 의미 문장에서 핵심 개념을 뽑아 성경 구절을 먼저 검색하고, 이 구절들을 후보로 AI에게 제공해 이름을 생성. 생성된 이름이 참조한 구절이 검색된 목록에 없으면 실제로 존재하는 구절이라도 근거로 인정하지 않고 걸러냄. 생성된 이름마다 성경 데이터에서 다시 검색해, 성경에 직접 나오는 이름인지, 성경적 개념으로 만든 이름인지, 해석을 더한 이름인지, 새로 지은 이름인지 4단계로 구분해 등급을 판정.', '성씨와 합쳤을 때 어감이 자연스러운지 채점하는 엔진 — 한글 음절을 초성·중성·종성으로 분해해 흐름이 매끄러운지, 받침이 부딪히는지를 규칙으로 판정하는 엔진을 직접 구현. 이 엔진은 새 이름을 만들지 않고 생성된 이름을 점수로 정렬만 하며, 실제 있는 흔한 단어처럼 들리는지처럼 규칙만으로 판단하기 어려운 부분은 이름을 생성하는 AI 쪽 프롬프트 지침에 반영해, 규칙과 AI가 채점과 생성 제약이라는 서로 다른 역할을 맡도록 구성.', '테스트 통과 시에만, 정해진 순서로 진행되는 자동 배포 — 코드를 준비(빌드·테스트)하는 작업과 서버에 올리는 작업을 분리해, 준비가 성공했을 때만 배포가 자동으로 이어지도록 구성. 배포할 때는 데이터베이스 구조 변경과 기본 데이터 입력을 완전히 끝낸 뒤에만 실제 서비스 컨테이너를 새 버전으로 교체하도록 순서를 고정해, 옛날 데이터 구조와 새 코드가 잠깐이라도 얽히는 상황을 방지.'],
+  '[{"title":"배포 도중 서버 전체가 응답하지 않는 상태가 됨","problem":"배포하는 도중 서버에 원격 접속하는 것조차 안 될 정도로 서버 전체가 약 24분간 멈춤","cause":"메모리 부족, 처리 지연 등 확인할 수 있는 원인은 다 아니었고, 서버 한 대에서 프로그램 3~4개를 한꺼번에 준비(빌드)하던 방식이 컴퓨터 자원을 너무 많이 사용한 것이 가장 유력한 원인으로 보이지만 완전히 확정하지는 못함","solution":"원인을 정확히 특정하지 못했기 때문에, 원인일 수 있는 상황 자체를 구조적으로 없애는 방향을 선택 — 프로그램을 준비(빌드)하는 작업을 서버가 아닌 GitHub에서 하도록 옮기고, 실제 서버는 완성된 프로그램만 받아오도록 바꿔서 서버가 무거운 작업을 아예 안 하게 만듦. 원인을 완전히 밝히지 못해 만약을 대비해 여유 메모리 공간도 늘려둠"},{"title":"이름에 안 어울리는 한자가 후보로 노출됨","problem":"죽을 사(死)처럼 이름으로 쓰기에 좋지 않은 한자가 추천 후보 상위에 노출됨","cause":"순서를 매겨서 뒤로 보내는 방식으로만 걸러내고 있었는데, 확인해보니 이 한자가 실제로 이름에 쓸 수 있다고 정부가 정한 한자 목록에 정식으로 포함돼 있어서 순서 조정만으로는 걸러지지 않음. 법적으로 써도 되는 한자와 추천할 만한 한자는 서로 다른 기준이라는 것을 이 일로 확인. 순서만 뒤로 미루는 방식은 후보가 충분할 때는 문제가 겉으로 드러나지 않지만, 조건에 맞는 후보 이름이 적게 나올 때는 순위가 밀린 한자도 결국 최종 후보 안에 들어갈 수 있어 근본적인 해결이 아니라는 것도 함께 확인","solution":"순서 조정(정렬)이 아니라 검색 결과 자체에서 강제로 빠지도록 걸러내는 조건(배제)으로 바꾸고, 죽음·살해 같은 좋지 않은 뜻을 가진 한자들을 별도 제외 목록에 좁게 추가"}]'::jsonb,
+  true,
+  '- 기존 작명 방식의 한계: 사주·음양오행에 기반한 작명 서비스는 흔하지만, 성경 말씀에서 의미를 찾아 이름을 짓는 서비스는 접해보지 못해 직접 만들어보기로 함
+- 서비스 방향: 성경적으로 좋은 이름과 실제로 자연스럽게 들리는 이름은 별개의 문제라고 보고, 의미와 어감을 각각 분석한 뒤 결합하는 방향으로 설계',
+  '- 근거 재확인: AI가 만든 결과를 그대로 믿지 않고, 원본 성경 데이터에서 다시 찾아봐서 근거가 얼마나 확실한지 등급을 매기도록 설계
+- 자동 배포 구조 개선: 서버에서 직접 프로그램을 준비하다 서버가 멈췄던 사고를 겪은 뒤, 준비 작업을 다른 곳(GitHub)에서 하도록 분리해 같은 문제가 다시 안 생기게 함
+- 배포 순서 설계: 데이터베이스 구조 변경과 기본 데이터 입력을 먼저 끝낸 뒤에만 서비스를 교체하도록 순서를 고정해, 새 코드가 옛날 데이터 구조와 안 맞아 생기는 오류를 없앰',
+  array['근거 등급을 매기는 이름 생성 파이프라인', '성씨와 합쳤을 때 어감이 자연스러운지 채점하는 엔진', '테스트 통과 시에만, 정해진 순서로 진행되는 자동 배포'],
+  '[
+    {"feature_index":0,"image_url":"/diagrams/bible-rag-pipeline.svg","caption":"사용자가 입력한 문장에서 핵심 개념을 뽑아 성경 구절을 먼저 검색하고, 이 구절만 후보로 AI에게 제공해 이름을 생성한 뒤, 생성된 이름을 성경 데이터에서 다시 검색해 4단계 근거 등급으로 판정하는 전체 흐름을 정리한 다이어그램입니다."},
+    {"feature_index":1,"image_url":"/diagrams/bible-phonetic-engine.svg","caption":"이름 생성 AI의 프롬프트 지침과, 생성된 이름을 초성·중성·종성으로 분해해 규칙으로 채점·정렬하는 엔진이 서로 다른 역할을 맡아 동작하는 구조를 정리한 다이어그램입니다."},
+    {"feature_index":2,"image_url":"/diagrams/bible-deploy-pipeline.svg","caption":"테스트(CI)를 통과했을 때만 배포(CD)가 이어지고, 서버에서는 마이그레이션·시딩을 임시 컨테이너로 먼저 끝낸 뒤에만 실제 컨테이너를 교체하는 순서와, 배포가 겹치면 순서대로 대기하는 큐잉 구조를 정리한 다이어그램입니다."}
+  ]'::jsonb
+)
+on conflict (title) do update set
+  period = excluded.period,
+  description = excluded.description,
+  tech_stack = excluded.tech_stack,
+  sort_order = excluded.sort_order,
+  media = excluded.media,
+  links = excluded.links,
+  team_size = excluded.team_size,
   role = excluded.role,
   features = excluded.features,
   troubleshooting = excluded.troubleshooting,
