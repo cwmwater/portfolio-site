@@ -193,7 +193,7 @@ export default async function Home() {
                   재직중
                 </span>
               </div>
-              <span className="font-mono text-[0.85rem] text-muted">2026.09 – 진행 중</span>
+              <span className="font-mono text-[0.85rem] text-muted">2026.09 – 현재</span>
             </div>
           </div>
         </div>
