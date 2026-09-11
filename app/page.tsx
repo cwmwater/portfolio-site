@@ -137,8 +137,65 @@ export default async function Home() {
 
       <section className="border-t border-black/10 bg-[#d7ede5] px-0 py-[72px] max-md:py-[52px]" id="projects">
         <div className="mx-auto max-w-[880px] px-6">
-          <SectionHead title="프로젝트" />
+          <div className="mb-8 flex items-center gap-2.5">
+            <svg
+              viewBox="0 0 24 24"
+              width="26"
+              height="26"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-dark"
+              aria-hidden="true"
+            >
+              <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z" />
+            </svg>
+            <h2 className="font-mono text-[1.9rem] font-extrabold tracking-tight text-dark">Project</h2>
+          </div>
           <ProjectList projects={projects} />
+
+          <div className="my-12 border-t border-dark/15" />
+
+          <div className="mb-6 flex items-center gap-2.5">
+            <svg
+              viewBox="0 0 24 24"
+              width="26"
+              height="26"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-dark"
+              aria-hidden="true"
+            >
+              <path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z" />
+              <path d="M8 6V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1" />
+              <path d="M3 12h18" />
+            </svg>
+            <h2 className="font-mono text-[1.9rem] font-extrabold tracking-tight text-dark">Career</h2>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-6 rounded-2xl border border-border border-t-4 border-t-accent bg-light p-6 shadow-card-lg">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logos/aitaekwondo.png"
+              alt="에이아이태권도 로고"
+              className="h-24 w-24 flex-shrink-0 rounded-2xl border border-border bg-surface object-contain p-3"
+            />
+            <div className="flex min-w-0 flex-col gap-2">
+              <div className="flex flex-wrap items-center gap-3">
+                <h3 className="font-mono text-[1.3rem] font-extrabold tracking-tight text-dark">에이아이태권도</h3>
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 font-mono text-xs font-medium text-accent">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                  재직중
+                </span>
+              </div>
+              <span className="font-mono text-[0.85rem] text-muted">2026.09 – 진행 중</span>
+            </div>
+          </div>
         </div>
       </section>
 
