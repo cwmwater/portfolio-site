@@ -179,12 +179,15 @@ export default async function Home() {
           </div>
 
           <div className="flex flex-wrap items-center gap-6 rounded-2xl border border-border border-t-4 border-t-accent bg-light p-6 shadow-card-lg">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logos/aitaekwondo.png"
-              alt="에이아이태권도 로고"
-              className="h-24 w-24 flex-shrink-0 rounded-2xl border border-border bg-surface object-contain p-3"
-            />
+            <a
+              href="https://www.aitkd.co.kr/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 rounded-2xl border border-border bg-surface p-3 transition-colors hover:border-accent"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logos/aitaekwondo.png" alt="에이아이태권도 로고" className="h-[72px] w-[72px] object-contain" />
+            </a>
             <div className="flex min-w-0 flex-col gap-2">
               <div className="flex flex-wrap items-center gap-3">
                 <h3 className="font-mono text-[1.3rem] font-extrabold tracking-tight text-dark">에이아이태권도</h3>

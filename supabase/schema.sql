@@ -164,7 +164,7 @@ values (
   'React, Spring, FastAPI를 연동한 3계층 아키텍처를 직접 설계하고 구현한 풀스택 개발자입니다. 기능 구현보다 서비스 전체 데이터 흐름을 이해하고 설계하는 데 더 신경 씁니다. 마케튼(Marketten) 프로젝트에서 GitHub 저장소 관리자로 6인 팀의 브랜치 통합을 총괄하며 AI 서비스 통합, OAuth2 기반 소셜 로그인 구축, 3계층 통신 구조 설계를 직접 경험했습니다. 게임 AI 프로젝트에서는 데이터 설계부터 LSTM 모델 학습, Unity 엔진 통합까지 전체 파이프라인을 직접 구현하며 복잡한 시스템 간 연동 능력을 키웠습니다. Spring 백엔드를 중심으로 프론트엔드와 AI 서비스까지 함께 다루면서 풀스택 개발자로 실력을 넓혀가고 있습니다.',
   null,
   '[{"primary":["Java","Python","JavaScript","C#"],"category":"Language","learning":[]},{"primary":["Spring / Spring Boot","JPA","FastAPI","NestJS","Prisma","OAuth2"],"category":"Backend","learning":[]},{"primary":["React"],"category":"Frontend","learning":[]},{"primary":["PyTorch","Pandas","RAG"],"category":"Data / AI","learning":[]},{"primary":["MySQL","PostgreSQL","Redis","Git","Docker","CI/CD","Oracle Cloud","Linux","AWS"],"category":"Infra","learning":[]},{"primary":["Unity"],"category":"Game","learning":[]}]'::jsonb,
-  '[{"title":"중부대학교 게임소프트웨어학과 학사","period":"2020.03~2026.02","category":"학력"},{"title":"정보처리기사","period":"2026.06","category":"자격증"},{"title":"H 아카데미 · 인공지능 트랜스포메이션을 위한 플랫폼 개발자 양성과정 수료","period":"2025.04~2025.10","category":"수료"}]'::jsonb,
+  '[{"title":"중부대학교 게임소프트웨어학과 학사","period":"2020.03~2026.02","category":"학력"},{"title":"H 아카데미 · 인공지능 트랜스포메이션을 위한 플랫폼 개발자 양성과정 수료","period":"2025.04~2025.10","category":"수료"},{"title":"SQLD","period":"2026.09","category":"자격증"},{"title":"정보처리기사","period":"2026.06","category":"자격증"}]'::jsonb,
   '2001.03.22',
   '경기도 고양시 덕양구'
 )
